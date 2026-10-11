@@ -1,35 +1,64 @@
 ---
 interface Props {
   mode?: 'transfer' | 'needs-you' | 'thinking';
+  /** Cycle Thinking → Needs you for marketing demos. */
+  cycle?: boolean;
 }
-const { mode = 'needs-you' } = Astro.props;
+const { mode = 'needs-you', cycle = false } = Astro.props;
 ---
 
-<div class="island" aria-hidden="true">
-  {mode === 'transfer' && (
-    <div class="pill">
-      <span class="mark">↓</span>
-      <span class="pct">62%</span>
-    </div>
-  )}
-  {mode === 'thinking' && (
-    <div class="pill">
-      <span class="mark mono">&lt;/&gt;</span>
-      <span>Thinking</span>
-    </div>
-  )}
-  {mode === 'needs-you' && (
-    <div class="pill alert">
-      <span class="mark mono">&lt;/&gt;</span>
-      <span>Needs you</span>
-    </div>
-  )}
+<div class:list={['island', cycle && 'is-cycle']} data-mode={mode} aria-hidden="true">
+  {
+    cycle ? (
+      <>
+        <div class="pill thinking">
+          <span class="mark mono">&lt;/&gt;</span>
+          <span>Thinking</span>
+          <span class="dots" />
+        </div>
+        <div class="pill alert needs">
+          <span class="mark mono">&lt;/&gt;</span>
+          <span>Needs you</span>
+        </div>
+      </>
+    ) : (
+      <>
+        {
+          mode === 'transfer' && (
+            <div class="pill">
+              <span class="mark">↓</span>
+              <span class="pct">62%</span>
+            </div>
+          )
+        }
+        {
+          mode === 'thinking' && (
+            <div class="pill thinking">
+              <span class="mark mono">&lt;/&gt;</span>
+              <span>Thinking</span>
+              <span class="dots" />
+            </div>
+          )
+        }
+        {
+          mode === 'needs-you' && (
+            <div class="pill alert needs">
+              <span class="mark mono">&lt;/&gt;</span>
+              <span>Needs you</span>
+            </div>
+          )
+        }
+      </>
+    )
+  }
 </div>
 
 <style>
   .island {
     display: flex;
     justify-content: center;
+    position: relative;
+    min-height: 34px;
   }
 
   .pill {
@@ -57,5 +86,114 @@ const { mode = 'needs-you' } = Astro.props;
 
   .alert {
     outline: 1px solid color-mix(in srgb, var(--accent-bright) 55%, transparent);
+  }
+
+  .dots::after {
+    content: "";
+    display: inline-block;
+    width: 1.1em;
+    text-align: left;
+    animation: island-dots 1.2s steps(4, end) infinite;
+  }
+
+  .island.is-cycle .pill {
+    position: absolute;
+    inset: 0 auto auto 50%;
+    translate: -50% 0;
+  }
+
+  .island.is-cycle .thinking {
+    animation: island-swap-a 5.5s var(--ease-soft, ease-in-out) infinite;
+  }
+
+  .island.is-cycle .needs {
+    animation: island-swap-b 5.5s var(--ease-soft, ease-in-out) infinite;
+  }
+
+  .island .needs {
+    animation: island-pulse 2.2s var(--ease-soft, ease-in-out) infinite;
+  }
+
+  @keyframes island-dots {
+    0% {
+      content: "";
+    }
+    25% {
+      content: ".";
+    }
+    50% {
+      content: "..";
+    }
+    75% {
+      content: "...";
+    }
+  }
+
+  @keyframes island-swap-a {
+    0%,
+    42% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50%,
+    92% {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes island-swap-b {
+    0%,
+    42% {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    50%,
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+  }
+
+  @keyframes island-pulse {
+    0%,
+    100% {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25),
+        0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25),
+        0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dots::after,
+    .island.is-cycle .thinking,
+    .island.is-cycle .needs,
+    .island .needs {
+      animation: none;
+    }
+
+    .island.is-cycle .thinking {
+      opacity: 0;
+    }
+
+    .island.is-cycle .needs {
+      opacity: 1;
+      position: relative;
+      inset: auto;
+      translate: none;
+    }
   }
 </style>

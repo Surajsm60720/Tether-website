@@ -58,6 +58,9 @@ export interface IPhoneMockupProps {
   /** Renders in the top status band (time / signal), above safe-area content. */
   statusBar?: ReactNode;
 
+  /** Content inside the Dynamic Island cutout (e.g. Live Activity / status). */
+  dynamicIsland?: ReactNode;
+
   style?: CSSProperties;
   className?: string;
   frameStyle?: CSSProperties;
@@ -192,6 +195,7 @@ export function IPhoneMockup({
   innerShadow = true,
 
   statusBar,
+  dynamicIsland,
 
   style,
   className,
@@ -410,16 +414,43 @@ export function IPhoneMockup({
             {wallpaper && <div aria-hidden style={wallpaperStyle} />}
 
             {useIsland && finalIslandW > 0 && finalIslandH > 0 && (
-              <div
-                aria-hidden
-                style={{
-                  ...cutoutCommon,
-                  top: 11,
-                  width: finalIslandW,
-                  height: finalIslandH,
-                  borderRadius: finalIslandR,
-                }}
-              />
+              <>
+                {/* Idle hardware cutout — always present at the real camera position */}
+                <div
+                  aria-hidden
+                  className="iphone-dynamic-island"
+                  style={{
+                    ...cutoutCommon,
+                    top: 11,
+                    zIndex: dynamicIsland ? 7 : 4,
+                    width: finalIslandW,
+                    height: finalIslandH,
+                    borderRadius: finalIslandR,
+                  }}
+                />
+                {dynamicIsland && (
+                  <div
+                    className="iphone-dynamic-island is-live"
+                    style={{
+                      ...cutoutCommon,
+                      top: 11,
+                      zIndex: 6,
+                      /* Tight expand so battery still fits on the status bar */
+                      width: finalIslandW + 136,
+                      height: finalIslandH,
+                      borderRadius: finalIslandR,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0 8px',
+                      boxSizing: 'border-box',
+                      background: '#000',
+                    }}
+                  >
+                    {dynamicIsland}
+                  </div>
+                )}
+              </>
             )}
 
             {!useIsland && useNotch && finalNotchW > 0 && finalNotchH > 0 && (

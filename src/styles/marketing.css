@@ -9,10 +9,8 @@
   justify-content: flex-start;
   padding: calc(var(--nav-h) + 0.85rem) 0 3rem;
   overflow: clip;
-  background:
-    radial-gradient(58% 48% at 50% 38%, var(--accent-glow), transparent 72%),
-    radial-gradient(36% 32% at 50% 78%, var(--accent-soft), transparent 62%),
-    var(--surface);
+  /* Page --surface shows through; washes live on ::after so the bottom edge can fade */
+  background: transparent;
 }
 
 .hero::before {
@@ -26,6 +24,31 @@
   background: radial-gradient(circle, var(--accent-soft), transparent 68%);
   filter: blur(10px);
   pointer-events: none;
+  z-index: 0;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 48% at 50% 38%, var(--accent-glow), transparent 72%),
+    radial-gradient(36% 32% at 50% 72%, var(--accent-soft), transparent 62%);
+  /* Feather the wash out before the section ends — kills the hard cut into #moment */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - 7rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - 7rem),
+    transparent 100%
+  );
 }
 
 .hero-solo {
@@ -193,18 +216,47 @@
 /* —— Problem / gap —— */
 .problem {
   position: relative;
-  background:
-    radial-gradient(55% 45% at 50% 0%, var(--accent-soft), transparent 70%),
-    var(--surface);
+  background: transparent;
   border: 0;
+  overflow: visible;
+}
+
+.problem::before {
+  content: "";
+  position: absolute;
+  /* Bleed into the moment above so the wash isn't clipped at the section edge */
+  inset: -4rem 0 -3rem;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(55% 42% at 50% 18%, var(--accent-soft), transparent 72%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 18%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 18%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.problem > * {
+  position: relative;
+  z-index: 1;
 }
 
 .problem .lead {
   max-width: 40rem;
+  margin-top: 0.15rem;
 }
 
 .gap-compare {
-  margin-top: 2.75rem;
+  margin-top: 3.25rem;
   display: grid;
   gap: 0;
   border-radius: 20px;
@@ -515,9 +567,291 @@
 }
 
 .path#power {
+  background: transparent;
+  overflow: visible;
+}
+
+.path#power::before {
+  content: "";
+  position: absolute;
+  inset: -3.5rem 0 -2.5rem;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(50% 40% at 70% 28%, var(--accent-soft), transparent 72%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 16%,
+    #000 82%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 16%,
+    #000 82%,
+    transparent 100%
+  );
+}
+
+.path#power > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* —— Familiar moment (problem only) → The gap —— */
+.moment {
+  position: relative;
+  padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+  background: transparent;
+  overflow: visible;
+}
+
+.moment::before {
+  content: "";
+  position: absolute;
+  /* Soft bridge from hero into the moment — no hard top cut */
+  inset: -5rem 0 -2rem;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(48% 42% at 18% 32%, var(--accent-soft), transparent 70%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 20%,
+    #000 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 20%,
+    #000 80%,
+    transparent 100%
+  );
+}
+
+.moment > * {
+  position: relative;
+  z-index: 1;
+}
+
+.moment-continues {
+  padding-top: clamp(3.5rem, 7vw, 5.5rem);
+}
+
+.moment-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2.75rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.moment-copy .h2 {
+  max-width: 14ch;
+}
+
+.moment-copy .lead {
+  margin-bottom: 2.5rem;
+  max-width: 32rem;
+}
+
+.moment-frictions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.65rem;
+  max-width: 28rem;
+}
+
+.moment-frictions li {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.moment-frictions strong {
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.moment-frictions span {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+
+.moment-visual {
+  display: grid;
+  place-items: center;
+  min-height: min(58vh, 440px);
+  padding: 2.25rem 1.75rem;
+  border-radius: 28px;
   background:
-    radial-gradient(50% 40% at 70% 20%, var(--accent-soft), transparent 70%),
-    transparent;
+    radial-gradient(80% 70% at 50% 40%, var(--accent-soft), transparent 70%),
+    color-mix(in srgb, var(--surface-raised) 80%, transparent);
+  border: 1px solid var(--hairline);
+}
+
+.story-scene {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+  width: min(100%, 340px);
+}
+
+.story-caption {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: -0.01em;
+  color: var(--ink-tertiary);
+  text-align: center;
+}
+
+.story-stuck-stage {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 1.1rem 0.85rem 0.65rem;
+}
+
+.story-mac {
+  display: grid;
+  justify-items: center;
+  gap: 0.28rem;
+  justify-self: end;
+}
+
+.story-mac-screen {
+  position: relative;
+  width: 7.2rem;
+  height: 4.6rem;
+  border-radius: 10px;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--surface-raised) 70%, #2a2e36), #161a20);
+  box-shadow:
+    inset 0 0 0 1px var(--hairline-strong),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+  display: grid;
+  place-items: center;
+}
+
+.story-mac-base {
+  width: 4.4rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.story-file-chip {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--btn-primary-fg);
+  background: linear-gradient(180deg, var(--accent-bright), var(--accent));
+  padding: 0.28rem 0.5rem;
+  border-radius: 7px;
+  box-shadow: 0 4px 14px var(--btn-primary-shadow);
+  animation: story-file-float 2.8s var(--ease-soft) infinite alternate;
+}
+
+.story-gap-path {
+  width: 5.5rem;
+  height: 2.4rem;
+  color: color-mix(in srgb, var(--ink) 35%, transparent);
+  overflow: visible;
+}
+
+.story-gap-dash {
+  animation: story-dash 1.8s linear infinite;
+}
+
+.story-gap-dot {
+  animation: story-dot-nudge 2.4s var(--ease-soft) infinite alternate;
+}
+
+.story-gap-label {
+  fill: var(--ink-tertiary);
+  font-size: 9px;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+.story-phone {
+  justify-self: start;
+}
+
+.story-phone-screen {
+  display: grid;
+  place-items: center;
+  width: 2.55rem;
+  height: 4.6rem;
+  border-radius: 0.7rem;
+  background: linear-gradient(160deg, #2a2a2e, #18181b);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 10px 22px rgba(0, 0, 0, 0.3);
+}
+
+.story-phone-miss {
+  font-style: normal;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink-tertiary);
+  animation: story-miss-pulse 1.6s var(--ease-soft) infinite;
+}
+
+@keyframes story-file-float {
+  from {
+    transform: translateY(2px);
+  }
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes story-dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes story-dot-nudge {
+  from {
+    transform: translateX(0);
+    opacity: 0.85;
+  }
+  to {
+    transform: translateX(14px);
+    opacity: 0.35;
+  }
+}
+
+@keyframes story-miss-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-file-chip,
+  .story-gap-dash,
+  .story-gap-dot,
+  .story-phone-miss {
+    animation: none;
+  }
 }
 
 /* —— Setup —— */
@@ -684,8 +1018,23 @@
 
 @media (max-width: 900px) {
   .hero-grid,
-  .path-sticky {
+  .path-sticky,
+  .moment-wrap {
     grid-template-columns: 1fr;
+  }
+
+  .moment-visual {
+    min-height: 320px;
+    order: -1;
+    padding: 2rem 1.35rem;
+  }
+
+  .moment-copy .lead {
+    margin-bottom: 2rem;
+  }
+
+  .moment-frictions {
+    gap: 1.35rem;
   }
 
   .hero {

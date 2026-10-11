@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/marketing.css';
 import PhoneFrame from '../components/PhoneFrame';
-import IslandChip from '../components/IslandChip.astro';
 import HeroLoop from '../components/HeroLoop';
 ---
 
@@ -16,21 +15,80 @@ import HeroLoop from '../components/HeroLoop';
         Browse files. Send photos. Run a terminal. All local — no cloud, no passwords to type.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#casual">For everyday use</a>
+        <a class="btn btn-primary" href="#moment">See the moment</a>
         <a class="btn btn-secondary" href="#power">For power users</a>
       </div>
       <a class="quiet-link" href="/docs">Read the docs</a>
     </div>
   </section>
 
+  <!-- Story: familiar moment (problem only → flows into The gap) -->
+  <section class="section moment" id="moment" data-chapter="moment" aria-labelledby="moment-heading">
+    <div class="wrap moment-wrap">
+      <div class="moment-copy">
+        <p class="eyebrow">A familiar moment</p>
+        <h2 class="h2" id="moment-heading">The file is on your Mac. You’re not.</h2>
+        <p class="lead">
+          You’re on the couch with your phone. The PDF, the photo, the export — it’s sitting on the laptop
+          in the other room. What now?
+        </p>
+        <ul class="moment-frictions">
+          <li>
+            <strong>AirDrop</strong>
+            <span>Needs both devices in reach — and it won’t let you browse the disk.</span>
+          </li>
+          <li>
+            <strong>Cloud sync</strong>
+            <span>Means uploading first, waiting, and trusting another account.</span>
+          </li>
+          <li>
+            <strong>Email yourself</strong>
+            <span>The workaround you already hate — slow, messy, and easy to lose.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="moment-visual" data-story-media="stuck" aria-hidden="true">
+        <div class="story-scene story-stuck">
+          <div class="story-stuck-stage">
+            <div class="story-mac">
+              <span class="story-mac-screen">
+                <i class="story-file-chip">brief.pdf</i>
+              </span>
+              <span class="story-mac-base"></span>
+            </div>
+            <svg class="story-gap-path" viewBox="0 0 120 40" fill="none">
+              <path
+                class="story-gap-dash"
+                d="M8 20c18-14 36-14 54 0s36 14 50 0"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-dasharray="4 6"
+              ></path>
+              <circle class="story-gap-dot" cx="8" cy="20" r="2.5" fill="var(--accent)"></circle>
+              <text x="48" y="38" class="story-gap-label">out of reach</text>
+            </svg>
+            <div class="story-phone">
+              <span class="story-phone-screen">
+                <i class="story-phone-miss">?</i>
+              </span>
+            </div>
+          </div>
+          <p class="story-caption">Same home. Different rooms. No easy path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Problem -->
-  <section class="section problem" aria-labelledby="gap-heading">
+  <section class="section problem moment-continues" aria-labelledby="gap-heading">
     <div class="wrap">
       <p class="eyebrow">The gap</p>
-      <h2 class="h2" id="gap-heading">AirDrop can’t browse. The alternatives ask for too much.</h2>
+      <h2 class="h2" id="gap-heading">Why the usual options fall short</h2>
       <p class="lead">
-        You want your Mac’s files on your phone — without uploading them, typing an IP, or living in a
-        general-purpose shell. Here’s how the usual options fall short, and where Tether fits.
+        That stuck feeling isn’t rare — it’s the default. Here’s how the common paths compare, and where a
+        shorter one fits.
       </p>
 
       <div class="gap-compare" role="table" aria-label="How Tether compares">
@@ -105,23 +163,6 @@ import HeroLoop from '../components/HeroLoop';
           <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
           <div class="gap-compare-cell" role="cell"><span class="gap-soft">App-dependent</span></div>
           <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">QuickLook</span></div>
-        </div>
-
-        <div class="gap-compare-row" role="row">
-          <div class="gap-compare-cell gap-compare-label" role="rowheader">
-            <span class="gap-need-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                <rect x="3.8" y="5" width="16.4" height="14" rx="2.2" stroke="currentColor" stroke-width="1.6"></rect>
-                <path d="M7.2 12.2 9.6 9.8l2.2 2.2L15.4 8.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M7.2 15.4h4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
-              </svg>
-            </span>
-            Terminal when you need it
-          </div>
-          <div class="gap-compare-cell" role="cell"><span class="gap-miss">No</span></div>
-          <div class="gap-compare-cell" role="cell"><span class="gap-miss">No</span></div>
-          <div class="gap-compare-cell" role="cell"><span class="gap-soft">Full shell</span></div>
-          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">Scoped</span></div>
         </div>
       </div>
 
@@ -255,17 +296,7 @@ import HeroLoop from '../components/HeroLoop';
             <PhoneFrame client:visible screen="monitor" dark />
           </div>
           <div class="path-frame" data-path-frame style="opacity:0">
-            <div style="display:grid;gap:1.25rem;justify-items:center;width:min(100%,280px)">
-              <IslandChip mode="needs-you" />
-              <img
-                src="/images/lab/11-transfer-and-thinking.png"
-                alt=""
-                width="280"
-                height="160"
-                loading="lazy"
-                style="border-radius:16px;width:100%;height:auto;object-fit:cover"
-              />
-            </div>
+            <PhoneFrame client:visible screen="agent" dark />
           </div>
           <div class="path-progress" data-path-progress><span></span></div>
         </div>

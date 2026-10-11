@@ -9,6 +9,7 @@ export type PhoneScreen =
   | 'send'
   | 'terminal'
   | 'monitor'
+  | 'agent'
   | 'transfers';
 
 interface Props {
@@ -18,15 +19,43 @@ interface Props {
   width?: number;
 }
 
-function StatusBar({ dark }: { dark?: boolean }) {
+function StatusBar({ dark, compact }: { dark?: boolean; compact?: boolean }) {
   return (
-    <div className={dark ? 'phone-status is-dark' : 'phone-status'}>
+    <div className={`phone-status${dark ? ' is-dark' : ''}${compact ? ' is-compact' : ''}`}>
       <span className="time">9:41</span>
       <span className="trailing" aria-hidden="true">
-        <i className="signal" />
-        <i className="wifi" />
+        {!compact && (
+          <>
+            <i className="signal" />
+            <i className="wifi" />
+          </>
+        )}
         <i className="battery" />
       </span>
+    </div>
+  );
+}
+
+/**
+ * Compact Live Activity around the camera cutout:
+ * left = agent icon, right = status word (Thinking, Editing, …).
+ */
+function AgentIslandStatus() {
+  return (
+    <div className="phone-island-live" aria-hidden="true">
+      <div className="phone-island-leading">
+        <span className="phone-island-icon is-code">&lt;/&gt;</span>
+        <span className="phone-island-icon is-claude">C</span>
+        <span className="phone-island-icon is-cursor">Cu</span>
+        <span className="phone-island-icon is-gemini">G</span>
+      </div>
+      <div className="phone-island-cutout-gap" />
+      <div className="phone-island-trailing">
+        <span className="phone-island-word is-thinking">Thinking</span>
+        <span className="phone-island-word is-editing">Editing</span>
+        <span className="phone-island-word is-working">Working</span>
+        <span className="phone-island-word is-needs">Needs you</span>
+      </div>
     </div>
   );
 }
@@ -37,7 +66,7 @@ function ScreenBody({ screen, dark }: { screen: PhoneScreen; dark?: boolean }) {
       <div className="phone-ui">
         <h4>Your Macs</h4>
         <div className="card">
-          <span className="dot" />
+          <span className="dot pulse" />
           <div>
             <strong>Studio Mac</strong>
             <small>Connected</small>
@@ -132,87 +161,149 @@ function ScreenBody({ screen, dark }: { screen: PhoneScreen; dark?: boolean }) {
   }
 
   if (screen === 'monitor') {
+    const cores = [
+      ['C1', '37%'],
+      ['C2', '12%'],
+      ['C3', '28%'],
+      ['C4', '9%'],
+      ['C5', '22%'],
+      ['C6', '15%'],
+      ['C7', '31%'],
+      ['C8', '6%'],
+    ] as const;
+
     return (
       <div className="phone-ui">
         <div className="term monitor">
           <div className="term-top">
             Studio Mac <span>· Live</span>
           </div>
-          <div className="mon-block">
-            <div className="mon-cmd">
-              <span className="p">$</span> fetch
-            </div>
-            <div className="mon-fetch">
-              <div className="mon-mark" aria-hidden="true" />
-              <dl>
-                <div>
-                  <dt>Host</dt>
-                  <dd>Studio Mac</dd>
-                </div>
-                <div>
-                  <dt>OS</dt>
-                  <dd>macOS 15.1</dd>
-                </div>
-                <div>
-                  <dt>CPU</dt>
-                  <dd>M2 Pro · 10c</dd>
-                </div>
-                <div>
-                  <dt>Mem</dt>
-                  <dd>32 GB</dd>
-                </div>
-                <div>
-                  <dt>Up</dt>
-                  <dd>4d 11h</dd>
-                </div>
-              </dl>
-            </div>
+
+          <div className="mon-label">
+            <span className="p">$</span> fetch
           </div>
-          <div className="mon-block">
-            <div className="mon-cmd">
-              <span className="p">$</span> htop
+          <div className="mon-fetch">
+            <div className="mon-fetch-mark" aria-hidden="true" />
+            <dl>
+              <div>
+                <dt>OS</dt>
+                <dd>macOS 15.1</dd>
+              </div>
+              <div>
+                <dt>CPU</dt>
+                <dd>M3 · 8 cores</dd>
+              </div>
+              <div>
+                <dt>Mem</dt>
+                <dd>24 GB</dd>
+              </div>
+              <div>
+                <dt>Up</dt>
+                <dd>21h 4m</dd>
+              </div>
+              <div>
+                <dt>Disk</dt>
+                <dd>245 / 460 GB</dd>
+              </div>
+              <div>
+                <dt>Shares</dt>
+                <dd>3</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="mon-label">
+            <span className="p">$</span> htop
+          </div>
+          <div className="mon-live">
+            <div className="mon-sec-head">
+              <span>CPU</span>
+              <em>14%</em>
             </div>
-            <div className="mon-htop">
-              <div className="mon-row">
-                <span>CPU</span>
-                <div className="mon-bars" aria-hidden="true">
-                  <i style={{ ['--h' as string]: '62%' }} />
-                  <i style={{ ['--h' as string]: '38%' }} />
-                  <i style={{ ['--h' as string]: '84%' }} />
-                  <i style={{ ['--h' as string]: '21%' }} />
-                  <i style={{ ['--h' as string]: '55%' }} />
-                  <i style={{ ['--h' as string]: '47%' }} />
+            <div className="mon-seg" aria-hidden="true">
+              <i className="user" style={{ width: '9%' }} />
+              <i className="system" style={{ width: '6%' }} />
+              <i className="idle" />
+            </div>
+            <div className="mon-cores" aria-hidden="true">
+              {cores.map(([label, pct]) => (
+                <div key={label} className="mon-core">
+                  <span>{label}</span>
+                  <div className="mon-core-bar">
+                    <i style={{ width: pct }} />
+                  </div>
                 </div>
-                <em>41%</em>
-              </div>
-              <div className="mon-row">
+              ))}
+            </div>
+            <div className="mon-meters">
+              <div className="mon-meter-row">
                 <span>Mem</span>
-                <div className="mon-meter" aria-hidden="true">
-                  <i style={{ width: '68%' }} />
+                <div className="mon-meter mem">
+                  <i style={{ width: '67%' }} />
                 </div>
-                <em>21.7G</em>
+                <em>16G</em>
               </div>
-              <div className="mon-row">
+              <div className="mon-meter-row">
                 <span>Disk</span>
-                <div className="mon-meter soft" aria-hidden="true">
-                  <i style={{ width: '44%' }} />
+                <div className="mon-meter disk">
+                  <i style={{ width: '53%' }} />
                 </div>
-                <em>412G</em>
+                <em>245G</em>
               </div>
-              <ul className="mon-procs">
-                <li>
-                  <span className="d">node</span>
-                  <em>18%</em>
-                </li>
-                <li>
-                  <span className="d">WindowServer</span>
-                  <em>9%</em>
-                </li>
-                <li>
-                  <span className="d">claude</span>
-                  <em>7%</em>
-                </li>
-              </ul>
+            </div>
+            <ul className="mon-procs">
+              <li>
+                <span className="d">WindowServer</span>
+                <em>9%</em>
+              </li>
+              <li>
+                <span className="d">node</span>
+                <em>4%</em>
+              </li>
+              <li>
+                <span className="d">claude</span>
+                <em>3%</em>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'agent') {
+    return (
+      <div className="phone-ui">
+        <div className="term agent">
+          <div className="term-top">
+            Studio Mac <span>· Agent</span>
+          </div>
+          <div className="agent-slot">
+            <div className="agent-slot-head">
+              <span className="agent-name">claude</span>
+              <span className="agent-state">Needs you</span>
+            </div>
+            <pre className="agent-stream">
+              <span className="p">$</span> claude{'\n'}
+              <span className="agent-dim">Allowlisted · live PTY</span>
+              {'\n\n'}
+              <span className="agent-line">Reading Projects/brief.md…</span>
+              {'\n'}
+              <span className="agent-line delay-1">Drafting a short summary.</span>
+              {'\n'}
+              <span className="agent-line delay-2">Proposed edit to README:</span>
+              {'\n'}
+              <span className="agent-code delay-3">+ Ship local preview notes</span>
+              {'\n\n'}
+              <span className="agent-ask delay-4">Apply this change?</span>
+              {'\n'}
+              <span className="agent-prompt delay-5">
+                <span className="p">›</span> <span className="cursor">█</span>
+              </span>
+            </pre>
+            <div className="agent-actions" aria-hidden="true">
+              <span className="agent-btn">Deny</span>
+              <span className="agent-btn primary">Allow</span>
             </div>
           </div>
         </div>
@@ -254,6 +345,8 @@ export default function PhoneFrame({ screen = 'hosts', dark = false, width }: Pr
     return () => ro.disconnect();
   }, [width]);
 
+  const isAgent = screen === 'agent';
+
   return (
     <div ref={slotRef} className="phone-slot" style={{ width: width != null ? width : '100%' }}>
       <IPhoneMockup
@@ -264,7 +357,8 @@ export default function PhoneFrame({ screen = 'hosts', dark = false, width }: Pr
         showHomeIndicator
         homeIndicatorColor={dark ? 'rgba(242,238,230,0.78)' : 'rgba(29,29,31,0.82)'}
         showSideButtons
-        statusBar={<StatusBar dark={dark} />}
+        statusBar={<StatusBar dark={dark} compact={isAgent} />}
+        dynamicIsland={isAgent ? <AgentIslandStatus /> : undefined}
         shadow
         frameStyle={{
           background: 'linear-gradient(145deg, #2a2a2e 0%, #202023 40%, #18181b 100%)',
