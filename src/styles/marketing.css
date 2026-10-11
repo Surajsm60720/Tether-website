@@ -462,8 +462,10 @@
 }
 
 .path-scene {
+  --path-stage-h: min(86vh, 640px);
+  --path-stage-pad-y: 4.6rem;
   position: relative;
-  height: min(72vh, 580px);
+  height: var(--path-stage-h);
   display: grid;
   place-items: center;
   border-radius: 28px;
@@ -472,22 +474,36 @@
     color-mix(in srgb, var(--surface-raised) 80%, transparent);
   border: 1px solid var(--hairline);
   overflow: hidden;
+  padding: 1.5rem 1.75rem 2.85rem;
 }
 
 .path-frame {
-  width: min(100%, 280px);
+  /*
+    Slot width for the React 15 Pro mock (logical 417px outer → scaled via width prop).
+    Height follows the mock’s aspect so the full chassis clears the progress bar.
+  */
+  width: min(248px, 100%, calc((var(--path-stage-h) - var(--path-stage-pad-y)) * 70.6 / 146.6));
   transition: opacity 0.22s ease;
+  padding-inline: 0.5rem;
+  display: grid;
+  place-items: center;
+  box-sizing: content-box;
+}
+
+.path-frame .phone-slot {
+  width: 100%;
 }
 
 .path-progress {
   position: absolute;
   left: 1.25rem;
   right: 1.25rem;
-  bottom: 1.1rem;
+  bottom: 1.05rem;
   height: 3px;
   border-radius: 999px;
   background: var(--hairline);
   overflow: hidden;
+  z-index: 2;
 }
 
 .path-progress > span {

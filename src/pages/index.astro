@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/marketing.css';
-import PhoneFrame from '../components/PhoneFrame.astro';
+import PhoneFrame from '../components/PhoneFrame';
 import IslandChip from '../components/IslandChip.astro';
 import HeroLoop from '../components/HeroLoop';
 ---
@@ -208,13 +208,13 @@ import HeroLoop from '../components/HeroLoop';
         </div>
         <div class="path-scene">
           <div class="path-frame" data-path-frame style="opacity:1">
-            <PhoneFrame screen="hosts" />
+            <PhoneFrame client:visible screen="hosts" />
           </div>
           <div class="path-frame" data-path-frame style="opacity:0">
-            <PhoneFrame screen="preview" />
+            <PhoneFrame client:visible screen="preview" />
           </div>
           <div class="path-frame" data-path-frame style="opacity:0">
-            <PhoneFrame screen="send" />
+            <PhoneFrame client:visible screen="send" />
           </div>
           <div class="path-progress" data-path-progress><span></span></div>
         </div>
@@ -249,11 +249,11 @@ import HeroLoop from '../components/HeroLoop';
         </div>
         <div class="path-scene">
           <div class="path-frame" data-path-frame style="opacity:1">
-            <PhoneFrame screen="terminal" dark />
+            <PhoneFrame client:visible screen="terminal" dark />
           </div>
           <div class="path-frame" data-path-frame style="opacity:0">
             <div style="display:grid;gap:1rem;justify-items:center">
-              <PhoneFrame screen="terminal" dark />
+              <PhoneFrame client:visible screen="terminal" dark />
             </div>
           </div>
           <div class="path-frame" data-path-frame style="opacity:0">
