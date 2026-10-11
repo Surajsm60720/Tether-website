@@ -1,0 +1,36 @@
+---
+title: Other networks
+description: Reach your Mac with Tailscale, a saved address, or a relay after pairing on Wi‑Fi.
+order: 23
+section: power
+---
+
+Tether does not create a VPN by itself. Same-Wi‑Fi discovery is local. Away from that network, the phone needs a reachable path: **Tailscale (recommended)**, a public address with a port forward, or a small outbound relay.
+
+Full step-by-step instructions live in the product repo at `docs/help/remote-access.md`. This page is the website summary.
+
+## Prerequisites
+
+1. Pair once on the same Wi‑Fi.
+2. Keep Tether Host running with at least one share if you want files.
+3. On the Mac, turn on **Allow connections from other networks**.
+4. Copy a fresh setup code after the reachable address (or relay) is correct; paste it on the iPhone under **Settings → Other networks**.
+
+## Connection order on the phone
+
+1. Local network if visible (cellular is not used for this path).
+2. Saved address (prefer Tailscale `100.x` when present).
+3. Saved relay.
+
+## Mental model
+
+| Situation | How the phone finds the Mac |
+| --- | --- |
+| Same Wi‑Fi | Local discovery |
+| Cellular / other Wi‑Fi | Saved Other networks setup code |
+
+A home `192.168.x.x` address only exists inside that Wi‑Fi. The internet cannot route to it.
+
+## Safety
+
+The setup code is tied to a Mac you already paired. It is not the file-encryption key. Do not publish it. A relay forwards bytes; after the handshake, file and terminal traffic remain ciphertext.

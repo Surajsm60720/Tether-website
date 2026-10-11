@@ -1,0 +1,245 @@
+---
+interface Props {
+  caption?: string;
+  variant?: 'status' | 'pairing' | 'shelf';
+}
+const { caption = 'Tether', variant = 'status' } = Astro.props;
+---
+
+<figure class="mac" data-device="mac">
+  <div class="mac-chrome" aria-hidden="true">
+    <div class="mac-dots"><span></span><span></span><span></span></div>
+    <div class="mac-title">{caption}</div>
+  </div>
+  <div class="mac-screen">
+    {
+      variant === 'status' && (
+        <div class="mac-ui">
+          <aside>
+            <div class="side-item active">Status</div>
+            <div class="side-item">Shared folders</div>
+            <div class="side-item">Inbox</div>
+            <div class="side-item">iPhones</div>
+          </aside>
+          <main>
+            <div class="row">
+              <span>Sharing</span>
+              <span class="pill">On</span>
+            </div>
+            <div class="row">
+              <span>Network</span>
+              <span class="dim">This Wi‑Fi</span>
+            </div>
+            <div class="share">
+              <div>
+                <span class="folder"></span>
+                <span>Documents</span>
+                <span class="dim">Read</span>
+              </div>
+              <div>
+                <span class="folder write"></span>
+                <span>Projects</span>
+                <span class="dim">Uploads</span>
+              </div>
+              <div>
+                <span class="folder write"></span>
+                <span>Inbox</span>
+                <span class="dim">Writable</span>
+              </div>
+            </div>
+          </main>
+        </div>
+      )
+    }
+    {
+      variant === 'pairing' && (
+        <div class="pair">
+          <div class="qr"></div>
+          <p class="code mono">K7M2-9QX4-W8PL-3NHD</p>
+          <p class="dim">Scan with Tether on your iPhone</p>
+        </div>
+      )
+    }
+  </div>
+</figure>
+
+<style>
+  .mac {
+    margin: 0;
+    border-radius: var(--radius-mac);
+    overflow: hidden;
+    background: #d8d8de;
+    box-shadow: var(--shadow-device);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+  }
+
+  .mac-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+    background: linear-gradient(180deg, #ececf0, #e1e1e7);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .mac-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mac-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #c5c5ca;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .mac-dots span:first-child {
+    background: linear-gradient(180deg, #ff857c, #ff5f57);
+  }
+  .mac-dots span:nth-child(2) {
+    background: linear-gradient(180deg, #ffd36a, #febc2e);
+  }
+  .mac-dots span:nth-child(3) {
+    background: linear-gradient(180deg, #52d964, #28c840);
+  }
+
+  .mac-title {
+    font-size: 0.72rem;
+    color: #4a4a4f;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .mac-screen {
+    background: #f5f5f7;
+    aspect-ratio: 16 / 10;
+  }
+
+  .mac-ui {
+    display: grid;
+    grid-template-columns: 34% 1fr;
+    height: 100%;
+    font-size: 0.68rem;
+  }
+
+  aside {
+    background: linear-gradient(180deg, #ebebef, #e4e4e9);
+    padding: 0.85rem 0.55rem;
+    display: grid;
+    gap: 0.25rem;
+    align-content: start;
+  }
+
+  .side-item {
+    padding: 0.45rem 0.55rem;
+    border-radius: 8px;
+    color: #555;
+    font-weight: 550;
+  }
+
+  .side-item.active {
+    background: rgba(201, 138, 27, 0.14);
+    color: #1d1d1f;
+    font-weight: 650;
+  }
+
+  main {
+    padding: 0.9rem;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    font-weight: 550;
+  }
+
+  .share {
+    margin-top: 0.85rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .share > div {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.48rem 0.55rem;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    font-weight: 600;
+  }
+
+  .folder {
+    width: 0.85rem;
+    height: 0.7rem;
+    border-radius: 2px;
+    background: #d0d0d6;
+    position: relative;
+  }
+
+  .folder::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 40%;
+    height: 3px;
+    border-radius: 2px 2px 0 0;
+    background: inherit;
+  }
+
+  .folder.write {
+    background: linear-gradient(180deg, #f0c05a, var(--accent));
+  }
+
+  .dim {
+    color: #6e6e73;
+    font-weight: 500;
+  }
+
+  .pill {
+    font-weight: 700;
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 12%, #fff);
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.62rem;
+  }
+
+  .pair {
+    height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.55rem;
+    text-align: center;
+  }
+
+  .qr {
+    width: 104px;
+    height: 104px;
+    border-radius: 12px;
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      repeating-conic-gradient(#1d1d1f 0% 25%, #fff 0% 50%) border-box;
+    background-size: 12px 12px;
+    border: 10px solid #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .code {
+    margin: 0.2rem 0 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+
+  .pair .dim {
+    margin: 0;
+    font-size: 0.68rem;
+  }
+</style>

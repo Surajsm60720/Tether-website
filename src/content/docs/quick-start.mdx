@@ -1,0 +1,38 @@
+---
+title: Quick start
+description: Install the Mac host, run the iPhone client, pair with a QR code, and browse.
+order: 1
+section: start
+---
+
+## Requirements
+
+- Xcode 16 or later
+- macOS 14+ for the host
+- iOS 17+ for the client
+- A physical iPhone for real pairing
+
+## Mac host
+
+1. Open `Tether.xcodeproj`.
+2. Select **TetherHost** → **My Mac** → Run.
+3. Add at least one folder on **Shared folders**. Nothing is shared until you choose it.
+4. Allow Local Network if macOS asks.
+
+## iPhone client
+
+1. Select **TetherClient** and your iPhone.
+2. Set **Signing & Capabilities → Team** to your Apple ID.
+3. Run. Trust the developer certificate if iOS asks.
+4. Keep Mac and iPhone on the same Wi‑Fi for the first pair.
+
+## Pair
+
+1. On the Mac, open **Pair new iPhone**.
+2. On the iPhone, continue through the Local Network primer, then **Pair**.
+3. Scan the QR (or type the 16-character code).
+4. Tap **Allow** on the Mac.
+
+You should land in the shared folders. Tabs: **Files**, **Send**, **Terminal**, **Transfers**.
+
+Next: [Mac setup](/docs/mac) · [iPhone setup](/docs/iphone) · [Pairing details](/docs/pairing)

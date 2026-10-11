@@ -1,0 +1,27 @@
+---
+title: Live agents
+description: Allowlisted CLIs, live PTY, Live Activity / Island, and trust boundaries.
+order: 21
+section: power
+---
+
+From Terminal, type an allowlisted name such as `claude`, `agent`, `codex`, `cursor`, `aider`, or `gemini`.
+
+## What happens
+
+1. Mac opens a PTY with your login shell PATH and credentials.
+2. Agent starts in the current share folder (or home when at `/`).
+3. Output streams to the phone; keystrokes go back.
+4. Session survives app switch and reconnect; close with the Terminal **X** to end it.
+
+## Trust warning
+
+Only pair a phone you trust. An agent runs as your Mac user. Shell operators are not allowed on this path, so a live session cannot become an arbitrary script. There is still **no** general interactive shell for arbitrary programs.
+
+## Island / Live Activity
+
+Status chips use fixed wording (Thinking / Working / Editing / Needs you / …). The Island never shows scraped PTY transcript text. When the agent needs approval or input, the Island can expand with **Needs you**.
+
+## Attach
+
+Paperclip on a live agent: pick a photo or file → upload to Inbox → paste the Mac absolute path into the agent.

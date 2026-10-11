@@ -1,0 +1,31 @@
+---
+title: Pairing
+description: QR or typed code, Mac approval, revoke, and the Local Network primer.
+order: 4
+section: start
+---
+
+## Local Network primer
+
+Before the system prompt, Tether explains that it needs to look for devices on your Wi‑Fi and that files do not leave the local network for that path. If access is denied later: turn Local Network on in Settings.
+
+## QR or code
+
+- Scan the QR on the Mac pairing window, or choose **Enter code instead**.
+- Typed codes are 16 characters (Crockford-friendly about O/0 and I/1/L).
+- Codes expire after 120 seconds and work once.
+
+## Approval
+
+The Mac shows which shares the phone will reach. **Allow** stores a fresh device key in the Keychain and sends it to the phone over the encrypted channel. The one-time pairing secret is discarded.
+
+If **Require approval** is on, later sessions also wait for Allow on the Mac.
+
+## Revoke
+
+**Settings → Devices → Revoke** deletes that phone’s key. The phone must pair again.
+
+## Same network tips
+
+- Guest Wi‑Fi often blocks device-to-device traffic. A phone hotspot works when both devices join it.
+- Cellular is not used for Bonjour discovery.

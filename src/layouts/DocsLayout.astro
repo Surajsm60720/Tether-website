@@ -1,0 +1,217 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '../styles/docs.css';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  description: string;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+const { title, description, headings = [] } = Astro.props;
+const docs = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+const sections = [
+  { id: 'start', label: 'Start' },
+  { id: 'use', label: 'Use' },
+  { id: 'power', label: 'Power' },
+  { id: 'trust', label: 'Trust' },
+  { id: 'meta', label: 'Meta' },
+] as const;
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/docs';
+
+function docHref(id: string) {
+  return id === 'index' ? '/docs' : `/docs/${id}`;
+}
+
+function isCurrent(id: string) {
+  const href = docHref(id);
+  return pathname === href;
+}
+
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+<BaseLayout title={title} description={description} bodyClass="docs-body">
+  <div class="docs-shell">
+    <aside class="docs-sidebar">
+      <div class="docs-search" data-docs-search>
+        <label class="visually-hidden" for="docs-q">Search docs</label>
+        <input id="docs-q" type="search" placeholder="Search docs" autocomplete="off" />
+        <ul class="docs-search-results" data-docs-search-results hidden></ul>
+      </div>
+      <nav class="docs-nav" aria-label="Docs">
+        {
+          sections.map((section) => {
+            const items = docs.filter((d) => d.data.section === section.id);
+            if (!items.length) return null;
+            return (
+              <div class="docs-nav-group">
+                <p class="docs-nav-label">{section.label}</p>
+                {items.map((doc) => (
+                  <a
+                    href={docHref(doc.id)}
+                    aria-current={isCurrent(doc.id) ? 'page' : undefined}
+                    data-docs-link
+                    data-title={doc.data.title}
+                    data-description={doc.data.description}
+                  >
+                    {doc.id === 'index' ? 'Overview' : doc.data.title}
+                  </a>
+                ))}
+              </div>
+            );
+          })
+        }
+      </nav>
+    </aside>
+    <div class="docs-main">
+      <article class="docs-article" data-pagefind-body>
+        <h1>{title}</h1>
+        <p class="docs-desc">{description}</p>
+        {
+          toc.length > 0 && (
+            <nav class="docs-toc" aria-label="On this page">
+              {toc.map((h) => (
+                <a href={`#${h.slug}`} class:list={[h.depth === 3 && 'is-h3']}>
+                  {h.text}
+                </a>
+              ))}
+            </nav>
+          )
+        }
+        <div class="docs-content">
+          <slot />
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    function bootDocsSearch() {
+      const root = document.querySelector('[data-docs-search]');
+      const input = document.querySelector<HTMLInputElement>('#docs-q');
+      const results = document.querySelector<HTMLUListElement>('[data-docs-search-results]');
+      if (!root || !input || !results) return;
+
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-docs-link]')].map((a) => ({
+        href: a.getAttribute('href') || '',
+        title: a.dataset.title || a.textContent || '',
+        description: a.dataset.description || '',
+      }));
+
+      function render(q: string) {
+        const query = q.trim().toLowerCase();
+        if (!query) {
+          results.hidden = true;
+          results.innerHTML = '';
+          return;
+        }
+        const matches = links
+          .filter(
+            (l) =>
+              l.title.toLowerCase().includes(query) ||
+              l.description.toLowerCase().includes(query) ||
+              l.href.toLowerCase().includes(query),
+          )
+          .slice(0, 8);
+        results.hidden = matches.length === 0;
+        results.innerHTML = matches
+          .map(
+            (m) =>
+              `<li><a href="${m.href}"><strong>${m.title}</strong><span>${m.description}</span></a></li>`,
+          )
+          .join('');
+      }
+
+      input.addEventListener('input', () => render(input.value));
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          input.value = '';
+          render('');
+          input.blur();
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (!root.contains(e.target as Node)) {
+          results.hidden = true;
+        }
+      });
+    }
+
+    bootDocsSearch();
+  </script>
+</BaseLayout>
+
+<style is:global>
+  .docs-body {
+    background: var(--surface);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .docs-nav-group {
+    margin-bottom: 0.35rem;
+  }
+
+  .docs-search {
+    position: relative;
+  }
+
+  .docs-search-results {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0.35rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: var(--surface-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    max-height: 320px;
+    overflow: auto;
+  }
+
+  .docs-search-results a {
+    display: block;
+    padding: 0.55rem 0.6rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .docs-search-results a:hover {
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+
+  .docs-search-results strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  .docs-search-results span {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.78rem;
+    color: var(--ink-secondary);
+  }
+
+  .docs-toc a.is-h3 {
+    padding-left: 0.75rem;
+  }
+
+  .docs-content > :first-child {
+    margin-top: 0;
+  }
+</style>

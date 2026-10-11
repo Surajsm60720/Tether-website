@@ -1,0 +1,79 @@
+---
+import '../styles/tailwind.css';
+import '../styles/global.css';
+import SkipLink from '../components/SkipLink.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+}
+const {
+  title,
+  description = 'Browse, send, and preview files on your Mac from your iPhone — or open a terminal — with no cloud and no passwords to type.',
+  bodyClass = '',
+} = Astro.props;
+const fullTitle = title === 'Tether' ? 'Tether — Your Mac. On your iPhone.' : `${title} · Tether`;
+---
+
+<!doctype html>
+<html lang="en" data-theme="gold">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0E1013" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/png" href="/images/icons/gold.png" data-theme-icon />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{fullTitle}</title>
+    <script is:inline>
+      (function () {
+        try {
+          // Stop the browser restoring a mid-page scroll on reload.
+          // Keep hash targets (e.g. /docs/...#privacy, /#casual).
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          if (!location.hash) {
+            window.scrollTo(0, 0);
+          }
+
+          var icons = {
+            gold: '/images/icons/gold.png',
+            blue: '/images/icons/blue.png',
+            green: '/images/icons/green.png',
+            neutral: '/images/icons/neutral.png',
+            midnight: '/images/icons/midnight.png',
+          };
+          var allowed = ['gold', 'blue', 'green', 'neutral', 'midnight'];
+          var saved = localStorage.getItem('tether-theme');
+          var theme = allowed.indexOf(saved) !== -1 ? saved : 'gold';
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = 'dark';
+          var link = document.querySelector('link[rel="icon"][data-theme-icon]');
+          if (link) link.setAttribute('href', icons[theme] || icons.gold);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class={bodyClass} data-theme="gold">
+    <script is:inline>
+      (function () {
+        try {
+          var theme = document.documentElement.dataset.theme || 'gold';
+          document.body.dataset.theme = theme;
+        } catch (e) {}
+      })();
+    </script>
+    <SkipLink />
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/motion.ts"></script>
+  </body>
+</html>

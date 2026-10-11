@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/marketing.css';
+---
+
+<BaseLayout
+  title="Get Tether"
+  description="Build Tether from source today. App Store and TestFlight placeholders until distribution is ready."
+>
+  <section class="section" style="padding-top:calc(var(--nav-h) + 3rem)">
+    <div class="wrap" style="max-width:720px">
+      <p class="eyebrow">Get Tether</p>
+      <h1 class="h2">Build from source</h1>
+      <p class="lead">
+        Distribution builds are not ready yet. Until App Store or TestFlight ships, run Host and Client from
+        the open Xcode project.
+      </p>
+
+      <ol class="dl-steps">
+        <li>
+          <h2>Clone the repo</h2>
+          <pre class="mono"><code>git clone https://github.com/Surajsm60720/Tether.git</code></pre>
+        </li>
+        <li>
+          <h2>Open the project</h2>
+          <p>Open <code>Tether.xcodeproj</code>. The local <code>TetherCore</code> package is already wired in.</p>
+        </li>
+        <li>
+          <h2>Run Mac host</h2>
+          <p>Select <strong>TetherHost</strong> → My Mac → Run. Add at least one shared folder.</p>
+        </li>
+        <li>
+          <h2>Run iPhone client</h2>
+          <p>
+            Select <strong>TetherClient</strong>, set your signing team, then Run on a physical iPhone for
+            real pairing.
+          </p>
+        </li>
+      </ol>
+
+      <div class="placeholders">
+        <div>
+          <h3>TestFlight</h3>
+          <p>Placeholder — not available yet.</p>
+        </div>
+        <div>
+          <h3>App Store</h3>
+          <p>Placeholder — not available yet.</p>
+        </div>
+      </div>
+
+      <div class="inline-links" style="margin-top:2rem">
+        <a class="btn btn-primary" href="/docs/quick-start">Quick start guide</a>
+        <a
+          class="btn btn-secondary"
+          href="https://github.com/Surajsm60720/Tether"
+          target="_blank"
+          rel="noopener noreferrer">GitHub</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dl-steps {
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .dl-steps li {
+    position: relative;
+    padding: 1.25rem 0 1.25rem 3rem;
+    border-bottom: 1px solid var(--hairline);
+    counter-increment: step;
+  }
+
+  .dl-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1.35rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--accent-text);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .dl-steps h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.15rem;
+  }
+
+  .dl-steps p {
+    margin: 0;
+    color: var(--ink-secondary);
+  }
+
+  .dl-steps pre {
+    margin: 0.5rem 0 0;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: var(--term-bg);
+    color: var(--term-fg);
+    overflow: auto;
+    font-size: 0.85rem;
+  }
+
+  .dl-steps code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  .placeholders {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .placeholders > div {
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .placeholders h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+  }
+
+  .placeholders p {
+    margin: 0;
+    color: var(--ink-tertiary);
+    font-size: 0.925rem;
+  }
+
+  @media (max-width: 560px) {
+    .placeholders {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

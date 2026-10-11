@@ -1,0 +1,45 @@
+---
+title: Security deep dive
+description: High-level CryptoKit summary, scoped paths, Keychain, and revoke — no secret material.
+order: 30
+section: trust
+---
+
+> **High-level only** — this page never includes keys, pairing secrets, or exploit detail.
+
+## Threat model
+
+Another device on the network, or a stranger who can open a TCP connection to the Mac, trying to read files or impersonate a paired phone. A compromised Mac or iPhone is outside this design.
+
+## Pairing
+
+- One-time 32-byte secret in the QR (typed code carries a shorter prefix).
+- Mac approval before a fresh 32-byte device key is stored in the Keychain and sent to the phone.
+- One-time secret discarded after approval.
+
+## Session crypto
+
+- ChaChaPoly sessions
+- HKDF-SHA256 for key derivation
+- HMAC-SHA256 authenticated handshakes
+- CryptoKit only — no third-party crypto
+
+## Path safety
+
+Every path from the phone is parsed and checked against shared folders. `parent directory segments`, absolute host paths, and symlink escapes are rejected.
+
+## Rate limits and revoke
+
+Five failed handshakes in a minute from one remote, or five failed pairing attempts, lock pairing for five minutes. Revoke removes the device key.
+
+## Logging and relay
+
+Logs use `os.Logger` and mark paths private. Keys, pairing secrets, and file contents are not logged. A relay may see handshake headers; after that it forwards ciphertext and does not hold the device key.
+
+## Agents
+
+File browser stays inside shares. Allowlisted agents run as your Mac user via PTY exceptions. The phone does not get a general Mac shell.
+
+## Privacy
+
+No account. No cloud sync on the core path. You choose folders and can revoke any phone.

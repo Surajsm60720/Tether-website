@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/marketing.css';
+
+const chapters = [
+  {
+    title: 'Meetup slice (M0)',
+    body: 'Discover on the same Wi‑Fi, QR pairing, encrypted browse and download, QuickLook, and a menu-bar host with share selection.',
+    href: '/docs/pairing',
+  },
+  {
+    title: 'Polished files (M1)',
+    body: 'Grid and list, thumbnails, sort, uploads, and a transfers surface with progress, retry, and cancel.',
+    href: '/docs/files',
+  },
+  {
+    title: 'Terminal (M2)',
+    body: 'A virtual shell for everyday file commands that stays inside shared folders.',
+    href: '/docs/terminal',
+  },
+  {
+    title: 'Ship-shape (M3)',
+    body: 'Devices, revoke, settings, clearer errors, and demo polish so the product could be shown end to end.',
+    href: '/docs/mac',
+  },
+  {
+    title: 'Send (3.0)',
+    body: 'Inbox, floating Shelf, iPhone Send tab, and Share Extension — phone to Mac without browsing the phone from the Mac.',
+    href: '/docs/send',
+  },
+  {
+    title: 'Agents & Island (2.x–3.x)',
+    body: 'Allowlisted live PTYs, monitor and fetch, Live Activities, and Dynamic Island status without exposing transcript text.',
+    href: '/docs/agents',
+  },
+  {
+    title: 'Reach further',
+    body: 'Other networks via Tailscale, a saved address, or an outbound relay — after pairing once on Wi‑Fi.',
+    href: '/docs/remote',
+  },
+  {
+    title: 'Now (3.2)',
+    body: 'Agent attach into Inbox, quieter agent networking, Island polish. Still out of scope: Windows and Android apps, and browsing the whole disk.',
+    href: '/docs/changelog',
+  },
+];
+---
+
+<BaseLayout
+  title="Journey"
+  description="How Tether grew from a meetup slice to version 3.2 — milestones, not mythology."
+>
+  <section class="section" style="padding-top:calc(var(--nav-h) + 3rem)">
+    <div class="wrap" style="max-width:720px">
+      <p class="eyebrow">Journey</p>
+      <h1 class="h2">Milestones, not mythology</h1>
+      <p class="lead">
+        An engineering diary aligned to the PRD releases and README version 3.2. Each chapter links into the
+        docs.
+      </p>
+
+      <ol class="chapters">
+        {
+          chapters.map((c) => (
+            <li>
+              <h2>{c.title}</h2>
+              <p>{c.body}</p>
+              <a href={c.href}>Related docs</a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .chapters {
+    list-style: none;
+    margin: 3rem 0 0;
+    padding: 0;
+  }
+
+  .chapters li {
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .chapters h2 {
+    margin: 0 0 0.45rem;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .chapters p {
+    margin: 0 0 0.65rem;
+    color: var(--ink-secondary);
+  }
+
+  .chapters a {
+    font-size: 0.9rem;
+    font-weight: 560;
+    text-decoration: none;
+  }
+</style>

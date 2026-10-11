@@ -1,0 +1,113 @@
+:root {
+  /* Dark chrome — site default; accents follow app Appearance presets */
+  --surface: #0e1013;
+  --surface-raised: #161a20;
+  --ink: #f2eee6;
+  --ink-secondary: #b0aaa0;
+  --ink-tertiary: #7d8590;
+  --hairline: rgba(242, 238, 230, 0.1);
+  --hairline-strong: rgba(242, 238, 230, 0.18);
+
+  --accent: #e8b04a;
+  --accent-bright: #f2c970;
+  --accent-text: #f2c970;
+  --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 22%, transparent);
+  --btn-primary-fg: #1a1200;
+  --btn-primary-shadow: rgba(232, 176, 74, 0.22);
+
+  --success: #4cc38a;
+  --warning: #f0a84a;
+  --danger: #ff6b6b;
+
+  --term-bg: #121417;
+  --term-fg: #e6e1d6;
+  --term-dim: #7d8590;
+  --term-prompt: #e8b04a;
+  --term-dir: #6cb6ff;
+  --term-exec: #7ee787;
+  --term-error: #ff7b72;
+
+  --nav-h: 72px;
+  --content: 1180px;
+  --prose: 680px;
+
+  /* Cupertino stack: SF Pro on Apple; Geist (SF-shaped) elsewhere */
+  --font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Geist Variable", "Geist", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
+    "Geist Variable", "Geist", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Geist Mono Variable", "Geist Mono", ui-monospace, Menlo, Monaco,
+    Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-device:
+    0 1px 1px rgba(0, 0, 0, 0.4),
+    0 28px 80px rgba(0, 0, 0, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --radius-device: 40px;
+  --radius-mac: 16px;
+  --color-scheme: dark;
+}
+
+/* App Appearance presets — accent only; chrome stays dark */
+[data-theme="gold"] {
+  --accent: #e8b04a;
+  --accent-bright: #f2c970;
+  --accent-text: #f2c970;
+  --btn-primary-fg: #1a1200;
+  --btn-primary-shadow: rgba(232, 176, 74, 0.22);
+  --term-prompt: #e8b04a;
+  --term-bg: #121417;
+}
+
+[data-theme="blue"] {
+  --accent: #5b9dff;
+  --accent-bright: #8bb8ff;
+  --accent-text: #8bb8ff;
+  --btn-primary-fg: #061018;
+  --btn-primary-shadow: rgba(91, 157, 255, 0.28);
+  --term-prompt: #6cb6ff;
+  --term-bg: #121417;
+}
+
+[data-theme="green"] {
+  --accent: #3dcf8e;
+  --accent-bright: #6ee0ad;
+  --accent-text: #6ee0ad;
+  --btn-primary-fg: #04140c;
+  --btn-primary-shadow: rgba(61, 207, 142, 0.26);
+  --term-prompt: #7ee787;
+  --term-bg: #121417;
+}
+
+[data-theme="neutral"] {
+  --accent: #8e8e93;
+  --accent-bright: #aeaeb2;
+  --accent-text: #aeaeb2;
+  --btn-primary-fg: #0f0f10;
+  --btn-primary-shadow: rgba(142, 142, 147, 0.28);
+  --term-prompt: #a1a1a6;
+  --term-bg: #121417;
+}
+
+[data-theme="midnight"] {
+  --surface: #0b0d10;
+  --surface-raised: #12151a;
+  --accent: #e8b04a;
+  --accent-bright: #f2c970;
+  --accent-text: #f2c970;
+  --btn-primary-fg: #1a1200;
+  --btn-primary-shadow: rgba(232, 176, 74, 0.22);
+  --term-prompt: #e8b04a;
+  --term-bg: #0b0d10;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --hairline: rgba(242, 238, 230, 0.28);
+    --ink-secondary: #d0cbc2;
+  }
+}

@@ -1,0 +1,30 @@
+---
+title: FAQ
+description: Guest Wi‑Fi, hotspot, transfers in foreground, and other practical answers.
+order: 31
+section: trust
+---
+
+## Guest Wi‑Fi blocks discovery
+
+Many guest networks isolate clients. Use a normal LAN, or join both devices to a phone hotspot.
+
+## Do transfers work in the background?
+
+Keep Tether in the foreground. iOS can suspend the app; a suspended app does not continue the copy. Live Activities may show last-known state — they do not keep chunk transfers running forever.
+
+## Can I browse the whole disk?
+
+No. Only folders you share. `/` on the phone is the share list.
+
+## Is there a general shell?
+
+No. Everyday commands are virtual inside shares. Only allowlisted agent names get a live PTY.
+
+## Windows or Android?
+
+Out of scope for now. Mac + iPhone only.
+
+## How do I reach home from cellular?
+
+Pair on Wi‑Fi first, then set up Tailscale (recommended), a reachable address, or a relay. See [Other networks](/docs/remote).

@@ -1,0 +1,184 @@
+---
+import GlassNav from './GlassNav';
+
+const pathname = Astro.url.pathname;
+const links = [
+  { href: '/#casual', label: 'Product' },
+  { href: '/features', label: 'Features' },
+  { href: '/docs', label: 'Docs' },
+  { href: '/security', label: 'Security' },
+  { href: '/journey', label: 'Journey' },
+].map((link) => ({
+  ...link,
+  current: link.href.startsWith('/#')
+    ? pathname === '/'
+    : pathname === link.href || pathname.startsWith(`${link.href}/`),
+}));
+---
+
+<header class="nav" data-nav>
+  <div class="nav-bar">
+    <GlassNav client:load pathname={pathname} links={links} />
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    height: var(--nav-h);
+    pointer-events: none;
+    background: transparent;
+  }
+
+  .nav-bar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0.55rem 1rem 0;
+    pointer-events: none;
+  }
+
+  .nav-bar :global(.glass-nav-shell) {
+    pointer-events: auto;
+    width: min(100%, 720px);
+  }
+
+  .nav :global(.glass-nav-surface) {
+    width: 100% !important;
+  }
+
+  .nav :global(.glass-nav-webgl) {
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+    overflow: hidden !important;
+    border-radius: 38px;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.35),
+      0 8px 24px rgba(0, 0, 0, 0.28);
+  }
+
+  .nav :global(.glass-nav-webgl canvas) {
+    border-radius: inherit;
+  }
+
+  .nav :global(.glass-nav-webgl[data-liquid-glass='fallback']) {
+    background: rgba(22, 26, 32, 0.72);
+    -webkit-backdrop-filter: blur(16px) saturate(1.35);
+    backdrop-filter: blur(16px) saturate(1.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+      0 8px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .nav :global(.glass-nav-inner) {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    height: 100%;
+    padding: 0 0.55rem 0 1rem;
+  }
+
+  .nav :global(.glass-nav-brand) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 720;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 1.05rem;
+    flex: 0 0 auto;
+  }
+
+  .nav :global(.glass-nav-mark) {
+    width: 1.55rem;
+    height: 1.55rem;
+    display: block;
+    flex: 0 0 auto;
+    border-radius: 0.38rem;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(242, 238, 230, 0.12);
+  }
+
+  .nav :global(.glass-nav-links) {
+    display: flex;
+    align-items: center;
+    gap: 0.05rem;
+    margin-left: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+    min-width: 0;
+  }
+
+  .nav :global(.glass-nav-links::-webkit-scrollbar) {
+    display: none;
+  }
+
+  .nav :global(.glass-nav-links a) {
+    text-decoration: none;
+    color: color-mix(in srgb, var(--ink) 72%, transparent);
+    font-size: 0.86rem;
+    font-weight: 540;
+    letter-spacing: -0.01em;
+    padding: 0.4rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .nav :global(.glass-nav-links a:hover) {
+    color: var(--ink);
+    background: rgba(242, 238, 230, 0.08);
+  }
+
+  .nav :global(.glass-nav-links a.is-current),
+  .nav :global(.glass-nav-links a[aria-current='page']) {
+    color: var(--ink);
+    background: var(--accent-soft);
+  }
+
+  .nav :global(.glass-nav-cta) {
+    display: none;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    color: var(--btn-primary-fg);
+    background: linear-gradient(180deg, var(--accent-bright), var(--accent));
+    padding: 0.42rem 0.85rem;
+    border-radius: 980px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    flex: 0 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .nav :global(.glass-nav-cta) {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .nav :global(.glass-nav-github) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .nav {
+      background: var(--surface);
+    }
+
+    .nav :global(.glass-nav-webgl[data-liquid-glass='fallback']) {
+      backdrop-filter: none;
+      background: var(--surface-raised);
+    }
+  }
+</style>

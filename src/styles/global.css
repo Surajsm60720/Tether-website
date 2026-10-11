@@ -1,0 +1,210 @@
+@import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background: var(--surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
+  color: var(--ink);
+  background: var(--surface);
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color 0.35s var(--ease-soft),
+    color 0.3s var(--ease-soft);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--accent-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 1000;
+  padding: 0.65rem 1rem;
+  background: var(--ink);
+  color: var(--surface-raised);
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+.wrap {
+  width: min(100% - 2.75rem, var(--content));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.h2 {
+  margin: 0 0 0.85rem;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 680;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+
+.lead {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--ink-secondary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 48px;
+  padding: 0.75rem 1.35rem;
+  border-radius: 980px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent-bright) 0%, var(--accent) 100%);
+  color: var(--btn-primary-fg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 10px 28px var(--btn-primary-shadow);
+}
+
+.btn-primary:hover {
+  background: var(--accent-bright);
+  color: var(--btn-primary-fg);
+}
+
+.btn-secondary {
+  background: color-mix(in srgb, var(--surface-raised) 70%, transparent);
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+  backdrop-filter: blur(8px);
+}
+
+.btn-secondary:hover {
+  border-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  color: var(--ink);
+  background: var(--surface-raised);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--accent-text);
+  padding-inline: 0.35rem;
+  min-height: auto;
+  text-decoration: none;
+  font-weight: 560;
+}
+
+.btn-ghost:hover {
+  color: var(--ink);
+}
+
+.quiet-link {
+  color: var(--ink-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.quiet-link:hover {
+  color: var(--accent-text);
+}
+
+.section {
+  padding: clamp(5rem, 10vw, 8.5rem) 0;
+}
+
+.section-tight {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav {
+    backdrop-filter: none !important;
+    background: var(--surface-raised) !important;
+  }
+}

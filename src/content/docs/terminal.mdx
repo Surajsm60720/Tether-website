@@ -1,0 +1,32 @@
+---
+title: Terminal
+description: Virtual shell command table and limits — no general Mac shell.
+order: 20
+section: power
+---
+
+The prompt looks like `mac-name:/Share/dir $`. History uses up/down. Tab completes commands and names. Type `help` for a catalog.
+
+## Commands
+
+These stay inside shared folders. `~` is `/`. Parent-directory segments cannot climb out of a share.
+
+| Command | What it does |
+| --- | --- |
+| `help` | List commands |
+| `pwd` / `cd` | Working folder |
+| `ls` / `cat` / `head` / `tail` | List and read |
+| `stat` / `du` / `find` / `tree` | Inspect |
+| `mkdir` / `rm` / `cp` / `mv` / `touch` | Write in writable shares |
+| `grep` / `wc` / `echo` / `date` | Text helpers |
+| `whoami` / `status` | Identity and host summary |
+| `fetch` | Short Mac portrait (`neofetch` / `fastfetch` aliases) |
+| `htop` | Live monitor (`btop` / `monitor` aliases) |
+| `open` / `get` / `put` | Preview, download, upload |
+| `clear` / `exit` | Clear scrollback / leave terminal |
+
+Unknown commands and shell operators (pipes, redirects, chaining) are rejected for a general Mac shell.
+
+## Slots
+
+Up to three reorderable slots: virtual shell, live agent, Monitor, or fetch. Inactive slots keep running. See [Agents](/docs/agents) and [Monitor](/docs/monitor).

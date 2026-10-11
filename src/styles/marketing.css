@@ -1,0 +1,529 @@
+/* —— Hero —— */
+.hero {
+  position: relative;
+  /* Sit under the sticky nav so one continuous surface — no seam */
+  margin-top: calc(-1 * var(--nav-h));
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: calc(var(--nav-h) + 0.85rem) 0 3rem;
+  overflow: clip;
+  background:
+    radial-gradient(58% 48% at 50% 38%, var(--accent-glow), transparent 72%),
+    radial-gradient(36% 32% at 50% 78%, var(--accent-soft), transparent 62%),
+    var(--surface);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 22% 50% auto;
+  translate: -50% 0;
+  width: min(70vw, 640px);
+  height: min(70vw, 640px);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.hero-solo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  max-width: 52rem;
+  margin-inline: auto;
+  width: min(100% - 2rem, 52rem);
+}
+
+.hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  z-index: 1;
+}
+
+.hero-loop {
+  position: relative;
+  width: min(520px, 88vw);
+  height: min(300px, 52vw);
+  margin: 0 0 1.1rem;
+  display: grid;
+  place-items: center;
+  justify-items: center;
+}
+
+.hero-loop .hero-loop-text {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  margin-inline: auto !important;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 640;
+  letter-spacing: 0.12em;
+  user-select: none;
+}
+
+.hero-loop .hero-loop-text span {
+  font-size: clamp(0.95rem, 2.4vw, 1.35rem) !important;
+  font-weight: 620;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-loop .hero-loop-text {
+    cursor: default;
+  }
+}
+
+.brand-mark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 680;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.hero h1 {
+  margin: 0 0 0.85rem;
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.2vw, 3.35rem);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.hero-support {
+  margin: 0 0 1.75rem;
+  max-width: 34rem;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--ink-secondary);
+}
+
+.hero-solo .cta-row {
+  justify-content: center;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.1rem;
+}
+
+.hero-visual {
+  position: relative;
+  min-height: clamp(340px, 56vh, 620px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.device-stage {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 5 / 4;
+}
+
+.device-stage::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 10%;
+  bottom: 4%;
+  height: 28%;
+  background: radial-gradient(ellipse at center, rgba(15, 15, 16, 0.16), transparent 70%);
+  filter: blur(18px);
+  z-index: 0;
+}
+
+.device-float {
+  position: absolute;
+  will-change: transform;
+  z-index: 1;
+}
+
+.device-float.is-mac {
+  left: 0;
+  bottom: 10%;
+  width: 74%;
+}
+
+.device-float.is-phone {
+  right: 0;
+  bottom: 0;
+  width: 36%;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .device-float {
+    animation: ambient-float 9s var(--ease-soft) infinite alternate;
+  }
+  .device-float.is-phone {
+    animation-delay: -3s;
+    animation-duration: 10.5s;
+  }
+}
+
+@keyframes ambient-float {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-0.2deg);
+  }
+  to {
+    transform: translate3d(0, -14px, 0) rotate(0.35deg);
+  }
+}
+
+/* —— Problem —— */
+.problem {
+  position: relative;
+  background: color-mix(in srgb, var(--surface-raised) 70%, var(--surface));
+  border-block: 1px solid var(--hairline);
+}
+
+.problem-flow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  margin-top: 1.85rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  font-size: 0.95rem;
+  color: var(--ink-secondary);
+}
+
+.problem-flow strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.problem-arrow {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+/* —— Path chapters —— */
+.path {
+  position: relative;
+}
+
+.path-pin {
+  height: 220vh;
+  margin-top: 2.75rem;
+}
+
+.path-sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + 0.75rem);
+  min-height: calc(100svh - var(--nav-h) - 1.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+  padding: 1.5rem 0;
+}
+
+.path-steps {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.path-step {
+  opacity: 0.28;
+  transform: translateX(-4px);
+  transition: opacity 0.35s var(--ease-soft), transform 0.35s var(--ease-soft);
+  padding-left: 1rem;
+  border-left: 2px solid transparent;
+}
+
+.path-step.is-active {
+  opacity: 1;
+  transform: none;
+  border-left-color: var(--accent);
+}
+
+.path-step h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.path-step p {
+  margin: 0;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+.path-scene {
+  position: relative;
+  height: min(72vh, 580px);
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background:
+    radial-gradient(80% 70% at 50% 40%, var(--accent-soft), transparent 70%),
+    color-mix(in srgb, var(--surface-raised) 80%, transparent);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+.path-frame {
+  width: min(100%, 280px);
+  transition: opacity 0.22s ease;
+}
+
+.path-progress {
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.1rem;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.path-progress > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+}
+
+.path#power {
+  background:
+    radial-gradient(50% 40% at 70% 20%, var(--accent-soft), transparent 70%),
+    transparent;
+}
+
+/* —— Setup —— */
+.setup-track {
+  display: grid;
+  gap: 0;
+  margin-top: 2.25rem;
+}
+
+.setup-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.35rem;
+  padding: 1.7rem 0;
+  border-bottom: 1px solid var(--hairline);
+  opacity: 0.35;
+  transition: opacity 0.35s var(--ease-soft);
+}
+
+.setup-step.is-active,
+.setup-step.is-done {
+  opacity: 1;
+}
+
+.setup-num {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-text);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: linear-gradient(180deg, var(--surface-raised), var(--accent-soft));
+}
+
+.setup-step h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+}
+
+.setup-step p {
+  margin: 0;
+  color: var(--ink-secondary);
+  max-width: 36rem;
+}
+
+.qr-pulse {
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 14px;
+  border: 2px solid var(--accent);
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    repeating-conic-gradient(from 0deg, #1d1d1f 0 25%, #fff 0 50%) border-box;
+  background-size: 10px 10px;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .qr-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 18px;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    animation: pulse-ring 2.2s var(--ease-soft) infinite;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.14);
+    opacity: 0;
+  }
+}
+
+/* —— Trust / bento —— */
+.trust-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 0.85rem;
+  max-width: 42rem;
+}
+
+.trust-list li {
+  padding: 1.1rem 1.2rem;
+  border-radius: 16px;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+}
+
+.trust-list strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.trust-list span {
+  color: var(--ink-secondary);
+}
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-top: 2.25rem;
+}
+
+.bento > * {
+  background: var(--surface-raised);
+  padding: 1.45rem 1.35rem;
+  border-radius: 18px;
+  border: 1px solid var(--hairline);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  transition: transform 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft);
+}
+
+.bento > *:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--hairline));
+}
+
+.bento h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
+.bento p {
+  margin: 0;
+  color: var(--ink-secondary);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.journey-teaser,
+.get-tether {
+  background:
+    radial-gradient(60% 80% at 100% 0%, var(--accent-soft), transparent 55%),
+    var(--surface-raised);
+  border-block: 1px solid var(--hairline);
+}
+
+.inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.25rem;
+  margin-top: 1.75rem;
+  align-items: center;
+}
+
+.path-scene .path-frame:not(:first-child) {
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .path-sticky {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-h) + 0.35rem);
+  }
+
+  .hero-loop {
+    width: min(420px, 92vw);
+    height: min(240px, 56vw);
+  }
+
+  .path-pin {
+    height: auto;
+  }
+
+  .path-sticky {
+    position: relative;
+    top: 0;
+    min-height: auto;
+  }
+
+  .bento {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .bento {
+    grid-template-columns: 1fr;
+  }
+
+  .device-float.is-mac {
+    width: 78%;
+  }
+
+  .device-float.is-phone {
+    width: 40%;
+  }
+
+  .brand-mark {
+    font-size: clamp(3.5rem, 18vw, 5rem);
+  }
+}
