@@ -24,20 +24,160 @@ import HeroLoop from '../components/HeroLoop';
   </section>
 
   <!-- Problem -->
-  <section class="section-tight problem">
+  <section class="section problem" aria-labelledby="gap-heading">
     <div class="wrap">
       <p class="eyebrow">The gap</p>
-      <h2 class="h2">AirDrop can’t browse. The alternatives ask for too much.</h2>
+      <h2 class="h2" id="gap-heading">AirDrop can’t browse. The alternatives ask for too much.</h2>
       <p class="lead">
-        iCloud needs the cloud. SMB and SSH need IPs and credentials. Tether keeps it local: discover,
-        scan a QR code, done.
+        You want your Mac’s files on your phone — without uploading them, typing an IP, or living in a
+        general-purpose shell. Here’s how the usual options fall short, and where Tether fits.
       </p>
-      <div class="problem-flow" aria-label="Setup flow">
-        <span><strong>Discover</strong></span>
-        <span class="problem-arrow" aria-hidden="true">→</span>
-        <span><strong>QR</strong></span>
-        <span class="problem-arrow" aria-hidden="true">→</span>
-        <span><strong>Done</strong></span>
+
+      <div class="gap-compare" role="table" aria-label="How Tether compares">
+        <div class="gap-compare-row gap-compare-head" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="columnheader">Need</div>
+          <div class="gap-compare-cell" role="columnheader">AirDrop</div>
+          <div class="gap-compare-cell" role="columnheader">iCloud</div>
+          <div class="gap-compare-cell" role="columnheader">SMB / SSH</div>
+          <div class="gap-compare-cell gap-compare-tether" role="columnheader">Tether</div>
+        </div>
+
+        <div class="gap-compare-row" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="rowheader">
+            <span class="gap-need-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <path d="M4 8.2 11.2 4.6a1.6 1.6 0 0 1 1.6 0L20 8.2v9.4a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 17.6V8.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path>
+                <path d="M9.2 19.4V12h5.6v7.4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            Browse folders
+          </div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-miss">No</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-soft">Cloud only</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
+          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">Yes</span></div>
+        </div>
+
+        <div class="gap-compare-row" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="rowheader">
+            <span class="gap-need-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <path d="M12 4.5c3.1 0 5.6 2.1 5.6 5.4 0 4.2-5.6 9.6-5.6 9.6S6.4 14.1 6.4 9.9c0-3.3 2.5-5.4 5.6-5.4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path>
+                <circle cx="12" cy="9.8" r="1.7" stroke="currentColor" stroke-width="1.6"></circle>
+              </svg>
+            </span>
+            Stay local
+          </div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-miss">Uploads</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
+          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">Yes</span></div>
+        </div>
+
+        <div class="gap-compare-row" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="rowheader">
+            <span class="gap-need-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2.2" stroke="currentColor" stroke-width="1.6"></rect>
+                <path d="M8.2 10.5V8.1a3.8 3.8 0 0 1 7.6 0v2.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              </svg>
+            </span>
+            No passwords to type
+          </div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-soft">Account</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-miss">IP + creds</span></div>
+          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">QR pair</span></div>
+        </div>
+
+        <div class="gap-compare-row" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="rowheader">
+            <span class="gap-need-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <rect x="7.2" y="3.8" width="9.6" height="16.4" rx="2.2" stroke="currentColor" stroke-width="1.6"></rect>
+                <path d="M10 7.2h4M11.2 17.8h1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+                <path d="M9.4 10.2h5.2v4.4H9.4z" stroke="currentColor" stroke-width="1.4"></path>
+              </svg>
+            </span>
+            Preview on phone
+          </div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-soft">After send</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-fit">Yes</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-soft">App-dependent</span></div>
+          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">QuickLook</span></div>
+        </div>
+
+        <div class="gap-compare-row" role="row">
+          <div class="gap-compare-cell gap-compare-label" role="rowheader">
+            <span class="gap-need-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <rect x="3.8" y="5" width="16.4" height="14" rx="2.2" stroke="currentColor" stroke-width="1.6"></rect>
+                <path d="M7.2 12.2 9.6 9.8l2.2 2.2L15.4 8.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M7.2 15.4h4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              </svg>
+            </span>
+            Terminal when you need it
+          </div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-miss">No</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-miss">No</span></div>
+          <div class="gap-compare-cell" role="cell"><span class="gap-soft">Full shell</span></div>
+          <div class="gap-compare-cell gap-compare-tether" role="cell"><span class="gap-fit">Scoped</span></div>
+        </div>
+      </div>
+
+      <div class="gap-path" aria-label="How Tether pairs">
+        <p class="gap-path-lead">Tether’s path stays short on purpose.</p>
+        <ol class="gap-steps">
+          <li class="gap-step">
+            <div class="gap-step-visual" aria-hidden="true">
+              <svg viewBox="0 0 88 64" width="88" height="64" fill="none">
+                <rect x="8" y="18" width="34" height="24" rx="3.5" stroke="currentColor" stroke-width="1.5"></rect>
+                <rect x="11" y="21.5" width="28" height="15" rx="1.5" fill="currentColor" opacity="0.08"></rect>
+                <path d="M20 46h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                <rect x="52" y="14" width="22" height="36" rx="4" stroke="currentColor" stroke-width="1.5"></rect>
+                <rect x="55.5" y="19" width="15" height="24" rx="1.5" fill="currentColor" opacity="0.08"></rect>
+                <path d="M60.5 45.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+                <path d="M42 30c3.2-3.5 7.2-5.4 11.5-5.4" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" opacity="0.9"></path>
+                <path d="M42 34c2.4-2.2 5.2-3.4 8.2-3.4" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" opacity="0.55"></path>
+                <circle cx="42" cy="32" r="2" fill="var(--accent)"></circle>
+              </svg>
+            </div>
+            <h3>Discover</h3>
+            <p>Nearby Macs running Tether Host show up on the same Wi‑Fi.</p>
+          </li>
+          <li class="gap-step">
+            <div class="gap-step-visual" aria-hidden="true">
+              <svg viewBox="0 0 88 64" width="88" height="64" fill="none">
+                <rect x="10" y="12" width="36" height="40" rx="4" stroke="currentColor" stroke-width="1.5"></rect>
+                <rect x="15" y="18" width="26" height="26" rx="2" stroke="var(--accent)" stroke-width="1.4"></rect>
+                <path d="M19 22h7v7h-7V22Zm11 0h7v7h-7V22ZM19 33h7v7h-7v-7Zm14 3h4v4h-4v-4Zm-3-3h4v7h-4v-7Z" fill="var(--accent)"></path>
+                <rect x="54" y="16" width="22" height="36" rx="4" stroke="currentColor" stroke-width="1.5"></rect>
+                <circle cx="65" cy="28" r="7" stroke="var(--accent)" stroke-width="1.4"></circle>
+                <path d="M65 24.8v6.4M61.8 28h6.4" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round"></path>
+                <path d="M60.5 45.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <h3>Scan QR</h3>
+            <p>Approve once on the Mac. Keys land in Keychain — nothing to type.</p>
+          </li>
+          <li class="gap-step">
+            <div class="gap-step-visual" aria-hidden="true">
+              <svg viewBox="0 0 88 64" width="88" height="64" fill="none">
+                <rect x="6" y="16" width="32" height="28" rx="3.5" stroke="currentColor" stroke-width="1.5"></rect>
+                <path d="M11 23h12M11 28h18M11 33h9" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.55"></path>
+                <rect x="12" y="37" width="8" height="3" rx="1" fill="var(--accent)" opacity="0.85"></rect>
+                <rect x="48" y="10" width="28" height="44" rx="5" stroke="currentColor" stroke-width="1.5"></rect>
+                <rect x="52" y="16" width="20" height="30" rx="2" fill="currentColor" opacity="0.06"></rect>
+                <path d="M55 21h14M55 26h10M55 31h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.5"></path>
+                <rect x="55" y="36" width="9" height="6" rx="1.2" stroke="var(--accent)" stroke-width="1.3"></rect>
+                <path d="M58.5 52h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
+                <path d="M38 30h8" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <h3>Browse</h3>
+            <p>Open shared folders, preview files, send photos, or drop into a scoped terminal.</p>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
