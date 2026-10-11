@@ -64,6 +64,11 @@ export function applyTheme(id: ThemeId, options: ApplyOptions = {}) {
     favicon.replaceWith(next);
   }
 
+  const apple = document.querySelector<HTMLLinkElement>('link[rel="apple-touch-icon"][data-theme-apple-icon]');
+  if (apple && apple.getAttribute('href') !== icon) {
+    apple.setAttribute('href', icon);
+  }
+
   document.dispatchEvent(new CustomEvent('tether:theme', { detail: { theme: id } }));
 
   if (preserveScroll && typeof window !== 'undefined') {

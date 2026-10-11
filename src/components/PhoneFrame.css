@@ -249,6 +249,185 @@
   color: var(--term-prompt);
 }
 
+.phone-ui .term.monitor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.phone-ui .mon-block {
+  display: grid;
+  gap: 8px;
+}
+
+.phone-ui .mon-cmd {
+  color: var(--term-dim);
+  font-size: 12px;
+}
+
+.phone-ui .mon-fetch {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.phone-ui .mon-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--term-prompt) 55%, #fff), transparent 42%),
+    linear-gradient(145deg, #2a2d34, #17191e);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.phone-ui .mon-fetch dl {
+  margin: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.phone-ui .mon-fetch dl > div {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 6px;
+}
+
+.phone-ui .mon-fetch dt {
+  margin: 0;
+  color: var(--term-dim);
+  font-weight: 500;
+}
+
+.phone-ui .mon-fetch dd {
+  margin: 0;
+  color: var(--term-fg);
+}
+
+.phone-ui .mon-htop {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.phone-ui .mon-row {
+  display: grid;
+  grid-template-columns: 34px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+  color: var(--term-dim);
+}
+
+.phone-ui .mon-row em {
+  font-style: normal;
+  text-align: right;
+  color: var(--term-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.phone-ui .mon-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+.phone-ui .mon-bars i {
+  flex: 1;
+  height: var(--h, 40%);
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--term-exec), color-mix(in srgb, var(--term-exec) 45%, #121417));
+  transform-origin: bottom;
+  animation: mon-bar 2.4s var(--ease-soft, ease-in-out) infinite alternate;
+}
+
+.phone-ui .mon-bars i:nth-child(2) {
+  animation-delay: -0.4s;
+}
+.phone-ui .mon-bars i:nth-child(3) {
+  animation-delay: -0.9s;
+}
+.phone-ui .mon-bars i:nth-child(4) {
+  animation-delay: -1.3s;
+}
+.phone-ui .mon-bars i:nth-child(5) {
+  animation-delay: -1.7s;
+}
+.phone-ui .mon-bars i:nth-child(6) {
+  animation-delay: -2.1s;
+}
+
+.phone-ui .mon-meter {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.phone-ui .mon-meter i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--term-dir), color-mix(in srgb, var(--term-dir) 55%, #fff));
+  animation: mon-meter 3.2s var(--ease-soft, ease-in-out) infinite alternate;
+}
+
+.phone-ui .mon-meter.soft i {
+  background: linear-gradient(90deg, var(--term-prompt), color-mix(in srgb, var(--term-prompt) 50%, #fff));
+  animation-duration: 4s;
+}
+
+.phone-ui .mon-procs {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 6px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  gap: 4px;
+}
+
+.phone-ui .mon-procs li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.phone-ui .mon-procs em {
+  font-style: normal;
+  color: var(--term-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes mon-bar {
+  from {
+    transform: scaleY(0.72);
+    opacity: 0.78;
+  }
+  to {
+    transform: scaleY(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes mon-meter {
+  from {
+    filter: brightness(0.92);
+  }
+  to {
+    filter: brightness(1.12);
+  }
+}
+
 .phone-ui .meter {
   flex: 1;
   height: 4px;

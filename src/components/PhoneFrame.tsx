@@ -2,7 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import IPhoneMockup from './ui/iphone-mockup';
 import './PhoneFrame.css';
 
-export type PhoneScreen = 'hosts' | 'files' | 'preview' | 'send' | 'terminal' | 'transfers';
+export type PhoneScreen =
+  | 'hosts'
+  | 'files'
+  | 'preview'
+  | 'send'
+  | 'terminal'
+  | 'monitor'
+  | 'transfers';
 
 interface Props {
   screen?: PhoneScreen;
@@ -119,6 +126,95 @@ function ScreenBody({ screen, dark }: { screen: PhoneScreen; dark?: boolean }) {
             <span className="d">Exports/</span>  brief.pdf{'\n'}
             <span className="p">studio:/Projects $</span> <span className="cursor">█</span>
           </pre>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'monitor') {
+    return (
+      <div className="phone-ui">
+        <div className="term monitor">
+          <div className="term-top">
+            Studio Mac <span>· Live</span>
+          </div>
+          <div className="mon-block">
+            <div className="mon-cmd">
+              <span className="p">$</span> fetch
+            </div>
+            <div className="mon-fetch">
+              <div className="mon-mark" aria-hidden="true" />
+              <dl>
+                <div>
+                  <dt>Host</dt>
+                  <dd>Studio Mac</dd>
+                </div>
+                <div>
+                  <dt>OS</dt>
+                  <dd>macOS 15.1</dd>
+                </div>
+                <div>
+                  <dt>CPU</dt>
+                  <dd>M2 Pro · 10c</dd>
+                </div>
+                <div>
+                  <dt>Mem</dt>
+                  <dd>32 GB</dd>
+                </div>
+                <div>
+                  <dt>Up</dt>
+                  <dd>4d 11h</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          <div className="mon-block">
+            <div className="mon-cmd">
+              <span className="p">$</span> htop
+            </div>
+            <div className="mon-htop">
+              <div className="mon-row">
+                <span>CPU</span>
+                <div className="mon-bars" aria-hidden="true">
+                  <i style={{ ['--h' as string]: '62%' }} />
+                  <i style={{ ['--h' as string]: '38%' }} />
+                  <i style={{ ['--h' as string]: '84%' }} />
+                  <i style={{ ['--h' as string]: '21%' }} />
+                  <i style={{ ['--h' as string]: '55%' }} />
+                  <i style={{ ['--h' as string]: '47%' }} />
+                </div>
+                <em>41%</em>
+              </div>
+              <div className="mon-row">
+                <span>Mem</span>
+                <div className="mon-meter" aria-hidden="true">
+                  <i style={{ width: '68%' }} />
+                </div>
+                <em>21.7G</em>
+              </div>
+              <div className="mon-row">
+                <span>Disk</span>
+                <div className="mon-meter soft" aria-hidden="true">
+                  <i style={{ width: '44%' }} />
+                </div>
+                <em>412G</em>
+              </div>
+              <ul className="mon-procs">
+                <li>
+                  <span className="d">node</span>
+                  <em>18%</em>
+                </li>
+                <li>
+                  <span className="d">WindowServer</span>
+                  <em>9%</em>
+                </li>
+                <li>
+                  <span className="d">claude</span>
+                  <em>7%</em>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     );
