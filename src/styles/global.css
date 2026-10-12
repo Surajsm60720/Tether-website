@@ -90,6 +90,31 @@ a:hover {
   margin-inline: auto;
 }
 
+@media (max-width: 560px) {
+  .wrap {
+    width: min(100% - 1.5rem, var(--content));
+  }
+
+  .lead {
+    font-size: 1.05rem;
+  }
+
+  .section {
+    padding: clamp(3.5rem, 12vw, 5.5rem) 0;
+  }
+
+  .cta-row,
+  .inline-links {
+    width: 100%;
+  }
+
+  .cta-row .btn,
+  .inline-links .btn {
+    flex: 1 1 auto;
+    min-width: min(100%, 10.5rem);
+  }
+}
+
 .eyebrow {
   margin: 0 0 0.85rem;
   font-size: 0.78rem;

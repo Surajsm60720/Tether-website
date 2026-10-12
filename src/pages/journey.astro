@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import productVersion from '../data/product-version.json';
 import '../styles/marketing.css';
+
+const version = productVersion.version;
 
 const chapters = [
   {
@@ -44,7 +47,7 @@ const chapters = [
     href: '/docs/changelog',
   },
   {
-    title: 'Now (3.3)',
+    title: `Now (${version})`,
     body: 'Lid-closed awake for Tailscale remote with the lid shut, clearer Other networks setup, and soft reconnects over cellular blips. Still out of scope: Windows and Android apps, and browsing the whole disk.',
     href: '/docs/lid-closed',
   },
@@ -53,14 +56,14 @@ const chapters = [
 
 <BaseLayout
   title="Journey"
-  description="How Tether grew from a meetup slice to version 3.3 — milestones, not mythology."
+  description={`How Tether grew from a meetup slice to version ${version} — milestones, not mythology.`}
 >
   <section class="section" style="padding-top:calc(var(--nav-h) + 3rem)">
     <div class="wrap" style="max-width:720px">
       <p class="eyebrow">Journey</p>
       <h1 class="h2">Milestones, not mythology</h1>
       <p class="lead">
-        An engineering diary aligned to the PRD releases and README version 3.3. Each chapter links into the
+        An engineering diary aligned to the PRD releases and README version {version}. Each chapter links into the
         docs.
       </p>
 

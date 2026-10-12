@@ -26,9 +26,14 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 80;
+    min-height: var(--nav-h);
     height: var(--nav-h);
     pointer-events: none;
     background: transparent;
+  }
+
+  :global(html.nav-menu-open) .nav {
+    height: auto;
   }
 
   .nav-bar {
@@ -42,6 +47,7 @@ const links = [
 
   .nav-bar :global(.glass-nav-shell) {
     pointer-events: auto;
+    position: relative;
     width: min(100%, 720px);
   }
 
@@ -80,6 +86,7 @@ const links = [
     gap: 0.45rem;
     width: 100%;
     height: 100%;
+    min-height: 76px;
     padding: 0 0.55rem 0 1rem;
   }
 
@@ -110,22 +117,17 @@ const links = [
     align-items: center;
     gap: 0.05rem;
     margin-left: auto;
-    overflow-x: auto;
-    scrollbar-width: none;
     min-width: 0;
   }
 
-  .nav :global(.glass-nav-links::-webkit-scrollbar) {
-    display: none;
-  }
-
-  .nav :global(.glass-nav-links a) {
+  .nav :global(.glass-nav-links a),
+  .nav :global(.glass-nav-panel-links a) {
     text-decoration: none;
     color: color-mix(in srgb, var(--ink) 72%, transparent);
     font-size: 0.86rem;
     font-weight: 540;
     letter-spacing: -0.01em;
-    padding: 0.4rem 0.55rem;
+    padding: 0.45rem 0.55rem;
     border-radius: 999px;
     white-space: nowrap;
     transition:
@@ -133,19 +135,25 @@ const links = [
       background 0.15s ease;
   }
 
-  .nav :global(.glass-nav-links a:hover) {
+  .nav :global(.glass-nav-links a:hover),
+  .nav :global(.glass-nav-panel-links a:hover) {
     color: var(--ink);
     background: rgba(242, 238, 230, 0.08);
   }
 
   .nav :global(.glass-nav-links a.is-current),
-  .nav :global(.glass-nav-links a[aria-current='page']) {
+  .nav :global(.glass-nav-links a[aria-current='page']),
+  .nav :global(.glass-nav-panel-links a.is-current),
+  .nav :global(.glass-nav-panel-links a[aria-current='page']) {
     color: var(--ink);
     background: var(--accent-soft);
   }
 
-  .nav :global(.glass-nav-cta) {
-    display: none;
+  .nav :global(.glass-nav-cta),
+  .nav :global(.glass-nav-panel-cta) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     font-size: 0.8rem;
     font-weight: 650;
@@ -153,20 +161,130 @@ const links = [
     color: var(--btn-primary-fg);
     background: linear-gradient(180deg, var(--accent-bright), var(--accent));
     padding: 0.42rem 0.85rem;
+    min-height: 36px;
     border-radius: 980px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
     flex: 0 0 auto;
   }
 
-  @media (min-width: 640px) {
+  .nav :global(.glass-nav-menu-btn) {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: 0.15rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+
+  .nav :global(.glass-nav-menu-btn:hover) {
+    background: rgba(242, 238, 230, 0.08);
+  }
+
+  .nav :global(.glass-nav-menu-bars) {
+    display: grid;
+    gap: 5px;
+    width: 18px;
+  }
+
+  .nav :global(.glass-nav-menu-bars span) {
+    display: block;
+    height: 1.5px;
+    border-radius: 999px;
+    background: currentColor;
+    transition:
+      transform 0.2s var(--ease-soft),
+      opacity 0.2s var(--ease-soft);
+    transform-origin: center;
+  }
+
+  .nav :global(.glass-nav-shell.is-open .glass-nav-menu-bars span:nth-child(1)) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  .nav :global(.glass-nav-shell.is-open .glass-nav-menu-bars span:nth-child(2)) {
+    opacity: 0;
+  }
+
+  .nav :global(.glass-nav-shell.is-open .glass-nav-menu-bars span:nth-child(3)) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  .nav :global(.glass-nav-panel) {
+    display: none;
+  }
+
+  @media (max-width: 859px) {
+    .nav :global(.glass-nav-links) {
+      display: none;
+    }
+
     .nav :global(.glass-nav-cta) {
       display: inline-flex;
+      margin-left: auto;
+      padding: 0.4rem 0.75rem;
+      min-height: 36px;
+      font-size: 0.78rem;
+    }
+
+    .nav :global(.glass-nav-menu-btn) {
+      display: inline-flex;
+      margin-left: 0;
+    }
+
+    .nav :global(.glass-nav-panel) {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 0.45rem;
+      padding: 0.85rem;
+      border-radius: 22px;
+      background: rgba(22, 26, 32, 0.92);
+      -webkit-backdrop-filter: blur(18px) saturate(1.35);
+      backdrop-filter: blur(18px) saturate(1.35);
+      box-shadow:
+        inset 0 0 0 1px rgba(242, 238, 230, 0.1),
+        0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav :global(.glass-nav-panel[hidden]) {
+      display: none;
+    }
+
+    .nav :global(.glass-nav-panel-links) {
+      display: grid;
+      gap: 0.2rem;
+    }
+
+    .nav :global(.glass-nav-panel-links a) {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 560;
+    }
+
+    .nav :global(.glass-nav-panel-cta) {
+      width: 100%;
+      min-height: 48px;
+      font-size: 0.95rem;
+      border-radius: 16px;
     }
   }
 
-  @media (max-width: 760px) {
-    .nav :global(.glass-nav-github) {
-      display: none;
+  @media (min-width: 860px) {
+    .nav :global(.glass-nav-panel) {
+      display: none !important;
+    }
+
+    .nav :global(.glass-nav-menu-btn) {
+      display: none !important;
     }
   }
 
@@ -175,9 +293,14 @@ const links = [
       background: var(--surface);
     }
 
-    .nav :global(.glass-nav-webgl[data-liquid-glass='fallback']) {
+    .nav :global(.glass-nav-webgl[data-liquid-glass='fallback']),
+    .nav :global(.glass-nav-panel) {
       backdrop-filter: none;
       background: var(--surface-raised);
     }
+  }
+
+  :global(html.nav-menu-open) {
+    overflow: hidden;
   }
 </style>

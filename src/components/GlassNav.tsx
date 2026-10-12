@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import {
   DEFAULT_THEME,
   THEME_STORAGE_KEY,
@@ -57,7 +57,7 @@ function currentThemeId(): ThemeId {
   return resolveTheme(document.documentElement.dataset.theme || localStorage.getItem(THEME_STORAGE_KEY));
 }
 
-function NavInner({ links }: { links: GlassNavLink[] }) {
+function BrandMark() {
   const [markSrc, setMarkSrc] = useState(() => themeIconSrc(DEFAULT_THEME));
 
   useEffect(() => {
@@ -72,20 +72,36 @@ function NavInner({ links }: { links: GlassNavLink[] }) {
   }, []);
 
   return (
+    <a className="glass-nav-brand" href="/" aria-label="Tether home">
+      <img
+        className="glass-nav-mark"
+        data-brand-mark
+        src={markSrc}
+        alt=""
+        width={28}
+        height={28}
+        decoding="async"
+        fetchPriority="high"
+      />
+      Tether
+    </a>
+  );
+}
+
+function NavChrome({
+  links,
+  menuOpen,
+  menuId,
+  onToggleMenu,
+}: {
+  links: GlassNavLink[];
+  menuOpen: boolean;
+  menuId: string;
+  onToggleMenu: () => void;
+}) {
+  return (
     <div className="glass-nav-inner">
-      <a className="glass-nav-brand" href="/" aria-label="Tether home">
-        <img
-          className="glass-nav-mark"
-          data-brand-mark
-          src={markSrc}
-          alt=""
-          width={28}
-          height={28}
-          decoding="async"
-          fetchPriority="high"
-        />
-        Tether
-      </a>
+      <BrandMark />
 
       <nav className="glass-nav-links" aria-label="Primary">
         {links.map((link) => (
@@ -109,6 +125,63 @@ function NavInner({ links }: { links: GlassNavLink[] }) {
       </nav>
 
       <a className="glass-nav-cta" href="/download">
+        Get Tether
+      </a>
+
+      <button
+        type="button"
+        className="glass-nav-menu-btn"
+        aria-expanded={menuOpen}
+        aria-controls={menuId}
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        onClick={onToggleMenu}
+      >
+        <span className="glass-nav-menu-bars" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function MobilePanel({
+  id,
+  open,
+  links,
+  onNavigate,
+}: {
+  id: string;
+  open: boolean;
+  links: GlassNavLink[];
+  onNavigate: () => void;
+}) {
+  return (
+    <div className="glass-nav-panel" id={id} hidden={!open}>
+      <nav className="glass-nav-panel-links" aria-label="Primary mobile">
+        {links.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            aria-current={link.current ? 'page' : undefined}
+            className={link.current ? 'is-current' : undefined}
+            onClick={onNavigate}
+          >
+            {link.label}
+          </a>
+        ))}
+        <a
+          className="glass-nav-github"
+          href="https://github.com/Surajsm60720/Tether"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onNavigate}
+        >
+          GitHub
+        </a>
+      </nav>
+      <a className="glass-nav-panel-cta" href="/download" onClick={onNavigate}>
         Get Tether
       </a>
     </div>
@@ -199,6 +272,9 @@ export default function GlassNav({ links }: Props) {
   const [refraction, setRefraction] = useState(true);
   const [engine, setEngine] = useState<'pending' | 'svg' | 'webgl'>('pending');
   const [SvgGlass, setSvgGlass] = useState<ComponentType<GlassSurfaceProps> | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-transparency: reduce)');
@@ -233,10 +309,45 @@ export default function GlassNav({ links }: Props) {
     };
   }, []);
 
-  const inner = <NavInner links={links} />;
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    const onPointer = (event: MouseEvent) => {
+      if (!shellRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.matchMedia('(min-width: 860px)').matches) setMenuOpen(false);
+    };
+
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onPointer);
+    window.addEventListener('resize', onResize);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onPointer);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('nav-menu-open', menuOpen);
+    return () => document.documentElement.classList.remove('nav-menu-open');
+  }, [menuOpen]);
+
+  const chrome = (
+    <NavChrome
+      links={links}
+      menuOpen={menuOpen}
+      menuId={menuId}
+      onToggleMenu={() => setMenuOpen((v) => !v)}
+    />
+  );
 
   return (
-    <div className="glass-nav-shell">
+    <div className={`glass-nav-shell${menuOpen ? ' is-open' : ''}`} ref={shellRef}>
       {engine === 'svg' && SvgGlass ? (
         <SvgGlass
           width="100%"
@@ -257,13 +368,15 @@ export default function GlassNav({ links }: Props) {
           renderer="auto"
           className="glass-nav-surface"
         >
-          {inner}
+          {chrome}
         </SvgGlass>
       ) : engine === 'webgl' ? (
-        <WebglGlassShell enabled={refraction}>{inner}</WebglGlassShell>
+        <WebglGlassShell enabled={refraction}>{chrome}</WebglGlassShell>
       ) : (
-        <FallbackShell>{inner}</FallbackShell>
+        <FallbackShell>{chrome}</FallbackShell>
       )}
+
+      <MobilePanel id={menuId} open={menuOpen} links={links} onNavigate={() => setMenuOpen(false)} />
     </div>
   );
 }

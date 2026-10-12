@@ -48,8 +48,20 @@ const jsonLd = {
 
 <BaseLayout title={title} description={description} bodyClass="docs-body">
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <div class:list={['docs-shell', showToc && 'has-toc']}>
-    <aside class="docs-sidebar" aria-label="Documentation">
+  <div class:list={['docs-shell', showToc && 'has-toc']} data-docs-shell>
+    <div class="docs-nav-toolbar">
+      <button
+        type="button"
+        class="docs-nav-toggle"
+        data-docs-nav-toggle
+        aria-expanded="false"
+        aria-controls="docs-sidebar"
+      >
+        <span class="docs-nav-toggle-label">Browse docs</span>
+        <span class="docs-nav-toggle-caret" aria-hidden="true"></span>
+      </button>
+    </div>
+    <aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation" data-docs-sidebar>
       <div class="docs-search" data-docs-search>
         <label class="visually-hidden" for="docs-q">Search docs</label>
         <input id="docs-q" type="search" placeholder="Search docs" autocomplete="off" />
@@ -220,8 +232,38 @@ const jsonLd = {
       });
     }
 
+    function bootDocsNavToggle() {
+      const shell = document.querySelector<HTMLElement>('[data-docs-shell]');
+      const toggle = document.querySelector<HTMLButtonElement>('[data-docs-nav-toggle]');
+      const sidebar = document.querySelector<HTMLElement>('[data-docs-sidebar]');
+      if (!shell || !toggle || !sidebar) return;
+
+      const label = toggle.querySelector('.docs-nav-toggle-label');
+
+      function setOpen(open: boolean) {
+        shell.classList.toggle('is-nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (label) label.textContent = open ? 'Hide docs menu' : 'Browse docs';
+      }
+
+      toggle.addEventListener('click', () => {
+        setOpen(!shell.classList.contains('is-nav-open'));
+      });
+
+      sidebar.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          if (window.matchMedia('(max-width: 860px)').matches) setOpen(false);
+        });
+      });
+
+      window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
+        if (event.matches) setOpen(false);
+      });
+    }
+
     bootDocsSearch();
     bootTocSpy();
+    bootDocsNavToggle();
   </script>
 </BaseLayout>
 

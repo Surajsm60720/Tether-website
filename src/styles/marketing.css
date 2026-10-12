@@ -255,10 +255,19 @@
   margin-top: 0.15rem;
 }
 
-.gap-compare {
+.gap-compare-scroll {
   margin-top: 3.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border-radius: 20px;
+  scrollbar-width: thin;
+}
+
+.gap-compare {
   display: grid;
   gap: 0;
+  min-width: 44rem;
   border-radius: 20px;
   overflow: hidden;
   background: color-mix(in srgb, var(--surface-raised) 55%, transparent);
@@ -267,7 +276,7 @@
 
 .gap-compare-row {
   display: grid;
-  grid-template-columns: minmax(9.5rem, 1.35fr) repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(9.5rem, 1.35fr) repeat(4, minmax(6.5rem, 1fr));
   align-items: stretch;
 }
 
@@ -441,15 +450,6 @@
 }
 
 @media (max-width: 900px) {
-  .gap-compare {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .gap-compare-row {
-    min-width: 40rem;
-  }
-
   .gap-steps {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -457,6 +457,13 @@
 
   .gap-step:not(:last-child)::after {
     display: none;
+  }
+}
+
+/* Narrow viewports: keep the desktop table; scroll sideways instead of stacking */
+@media (max-width: 900px) {
+  .gap-compare-scroll {
+    margin-top: 2.5rem;
   }
 }
 
@@ -1333,6 +1340,30 @@
   .hero {
     min-height: auto;
     padding-top: calc(var(--nav-h) + 0.35rem);
+    padding-bottom: 2.25rem;
+  }
+
+  .hero-solo {
+    width: min(100% - 1.5rem, 52rem);
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+  }
+
+  .hero-support {
+    font-size: 1.05rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .hero-solo .cta-row {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .hero-solo .cta-row .btn {
+    flex: 1 1 calc(50% - 0.4rem);
+    justify-content: center;
   }
 
   .hero-loop {
@@ -1348,11 +1379,22 @@
     position: relative;
     top: 0;
     min-height: auto;
+    gap: 1.75rem;
+    padding: 0.5rem 0 1rem;
+  }
+
+  .path-scene {
+    width: min(100%, 22rem);
+    margin-inline: auto;
   }
 
   .journey-teaser-wrap {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .get-tether-wrap .inline-links {
+    width: 100%;
   }
 }
 
@@ -1365,7 +1407,45 @@
     width: 40%;
   }
 
-  .brand-mark {
-    font-size: clamp(3.5rem, 18vw, 5rem);
+  .hero-solo .cta-row {
+    flex-direction: column;
+  }
+
+  .hero-solo .cta-row .btn {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .hero-loop {
+    width: min(340px, 88vw);
+    height: min(190px, 50vw);
+    margin-bottom: 0.75rem;
+  }
+
+  .journey-milestones {
+    padding: 1rem;
+  }
+
+  .journey-milestones li {
+    grid-template-columns: 2.75rem 1fr;
+    gap: 0.65rem;
+  }
+
+  .setup-step p {
+    max-width: none;
+  }
+
+  .path-step {
+    padding-left: 0.85rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: clamp(1.75rem, 9vw, 2.15rem);
+  }
+
+  .h2 {
+    font-size: clamp(1.7rem, 8.5vw, 2.25rem);
   }
 }

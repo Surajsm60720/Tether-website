@@ -11,6 +11,7 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
+    "sync:version": "node scripts/sync-product-version.mjs",
     "build:size": "npm run build && echo '' && echo 'Largest assets:' && ls -lahS dist/_astro | head -16 && echo '' && du -sh dist dist/_astro dist/images dist/pagefind"
   },
   "dependencies": {

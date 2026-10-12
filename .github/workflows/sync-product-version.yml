@@ -1,0 +1,62 @@
+name: Sync product version
+
+# Scrapes Surajsm60720/Tether for AppChangelog.current and bumps this site when
+# the product version advances — including version-only bumps with no new features.
+
+on:
+  schedule:
+    # Every 6 hours.
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [product-version-bump]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-product-version
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Scrape Tether and update version
+        env:
+          TETHER_REPO: Surajsm60720/Tether
+          TETHER_REF: master
+          # Optional: PAT with contents:read on a private product repo.
+          # Public repos work without this secret.
+          TETHER_REPO_TOKEN: ${{ secrets.TETHER_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run sync:version
+
+      - name: Commit version bump
+        id: commit
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No version change to commit."
+            exit 0
+          fi
+
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('src/data/product-version.json','utf8')).version")"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/product-version.json src/content/changelog src/content/docs/changelog.mdx
+          git commit -m "chore: sync product version to ${VERSION}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Push
+        if: steps.commit.outputs.changed == 'true'
+        run: git push origin HEAD
