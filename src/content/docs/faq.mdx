@@ -27,4 +27,16 @@ Out of scope for now. Mac + iPhone only.
 
 ## How do I reach home from cellular?
 
-Pair on Wi‑Fi first, then set up Tailscale (recommended), a reachable address, or a relay. See [Other networks](/docs/remote).
+Pair on Wi‑Fi first, then set up Tailscale (recommended), a reachable address, or a relay. Save a fresh setup code that shows a `100.x` address (or a relay) — not only `192.168…`. See [Other networks](/docs/remote).
+
+## What if I close the MacBook lid?
+
+Idle-sleep prevention alone is not enough for a closed lid. Install [lid-closed awake](/docs/lid-closed) once on the Mac, turn on **Prevent sleep while active**, confirm **Holding awake**, then close the lid. Prefer AC power for long sessions.
+
+## Do I need a relay if I use Tailscale?
+
+No. Leave the relay field empty for the Tailscale-only path.
+
+## Is the setup code a password for my files?
+
+No. It carries routing info. Files and terminal still need the paired device key. Treat the code as private.

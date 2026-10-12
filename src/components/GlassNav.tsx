@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { LiquidGlass } from 'apple-liquid-glass-webgl';
-import GlassSurface from './reactbits/GlassSurface';
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import {
   DEFAULT_THEME,
   THEME_STORAGE_KEY,
@@ -18,6 +16,27 @@ export type GlassNavLink = {
 type Props = {
   pathname: string;
   links: GlassNavLink[];
+};
+
+type GlassSurfaceProps = {
+  width?: string | number;
+  height?: string | number;
+  borderRadius?: number;
+  borderWidth?: number;
+  brightness?: number;
+  opacity?: number;
+  blur?: number;
+  displace?: number;
+  backgroundOpacity?: number;
+  saturation?: number;
+  distortionScale?: number;
+  redOffset?: number;
+  greenOffset?: number;
+  blueOffset?: number;
+  refraction?: boolean;
+  renderer?: string;
+  className?: string;
+  children?: ReactNode;
 };
 
 /** Chromium-only: SVG displacement through backdrop-filter. */
@@ -63,6 +82,7 @@ function NavInner({ links }: { links: GlassNavLink[] }) {
           width={28}
           height={28}
           decoding="async"
+          fetchPriority="high"
         />
         Tether
       </a>
@@ -95,44 +115,73 @@ function NavInner({ links }: { links: GlassNavLink[] }) {
   );
 }
 
+function FallbackShell({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className="glass-nav-surface glass-nav-webgl"
+      data-liquid-glass="fallback"
+      style={{
+        width: '100%',
+        height: 76,
+        borderRadius: 38,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function WebglGlassShell({ children, enabled }: { children: ReactNode; enabled: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || !enabled || !LiquidGlass.isSupported()) return;
+    if (!el || !enabled) return;
 
-    const glass = new LiquidGlass(el, {
-      backdrop: 'auto',
-      tint: 0.55,
-      tintTone: 'dark',
-      frost: 0.38,
-      shape: 'pill',
-      radius: 38,
-      material: {
-        refraction: 36,
-        dispersion: 0.55,
-        edgeReach: 0.08,
-        edgeWidth: 0.14,
-        rim: 0.16,
-        reflection: 0.1,
-        highlight: 0.14,
-        hairline: 0.45,
-        body: 0.45,
-        absorption: 0.28,
-      },
-      respectReducedTransparency: true,
-      live: 'auto',
-      maxDpr: 1.25,
+    let cancelled = false;
+    let destroy: (() => void) | undefined;
+
+    void import('apple-liquid-glass-webgl').then(({ LiquidGlass }) => {
+      if (cancelled || !el || !LiquidGlass.isSupported()) return;
+      const glass = new LiquidGlass(el, {
+        backdrop: 'auto',
+        tint: 0.55,
+        tintTone: 'dark',
+        frost: 0.38,
+        shape: 'pill',
+        radius: 38,
+        material: {
+          refraction: 36,
+          dispersion: 0.55,
+          edgeReach: 0.08,
+          edgeWidth: 0.14,
+          rim: 0.16,
+          reflection: 0.1,
+          highlight: 0.14,
+          hairline: 0.45,
+          body: 0.45,
+          absorption: 0.28,
+        },
+        respectReducedTransparency: true,
+        live: 'auto',
+        maxDpr: 1.1,
+      });
+      destroy = () => glass.destroy();
     });
 
-    return () => glass.destroy();
+    return () => {
+      cancelled = true;
+      destroy?.();
+    };
   }, [enabled]);
 
   return (
     <div
       ref={ref}
       className="glass-nav-surface glass-nav-webgl"
+      data-liquid-glass="fallback"
       style={{
         width: '100%',
         height: 76,
@@ -148,7 +197,8 @@ function WebglGlassShell({ children, enabled }: { children: ReactNode; enabled: 
 
 export default function GlassNav({ links }: Props) {
   const [refraction, setRefraction] = useState(true);
-  const [engine, setEngine] = useState<'svg' | 'webgl'>('webgl');
+  const [engine, setEngine] = useState<'pending' | 'svg' | 'webgl'>('pending');
+  const [SvgGlass, setSvgGlass] = useState<ComponentType<GlassSurfaceProps> | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-transparency: reduce)');
@@ -159,21 +209,36 @@ export default function GlassNav({ links }: Props) {
   }, []);
 
   useEffect(() => {
-    // Prefer WebGL everywhere it works — Safari/Firefox never get SVG refraction.
-    // Fall back to React Bits SVG path only when WebGL2 is missing but Chromium SVG works.
-    if (LiquidGlass.isSupported()) {
+    let cancelled = false;
+
+    void import('apple-liquid-glass-webgl').then(({ LiquidGlass }) => {
+      if (cancelled) return;
+      if (LiquidGlass.isSupported()) {
+        setEngine('webgl');
+        return;
+      }
+      if (supportsSvgRefraction()) {
+        void import('./reactbits/GlassSurface').then((mod) => {
+          if (cancelled) return;
+          setSvgGlass(() => mod.default as ComponentType<GlassSurfaceProps>);
+          setEngine('svg');
+        });
+        return;
+      }
       setEngine('webgl');
-    } else if (supportsSvgRefraction()) {
-      setEngine('svg');
-    } else {
-      setEngine('webgl');
-    }
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  const inner = <NavInner links={links} />;
 
   return (
     <div className="glass-nav-shell">
-      {engine === 'svg' ? (
-        <GlassSurface
+      {engine === 'svg' && SvgGlass ? (
+        <SvgGlass
           width="100%"
           height={76}
           borderRadius={38}
@@ -192,12 +257,12 @@ export default function GlassNav({ links }: Props) {
           renderer="auto"
           className="glass-nav-surface"
         >
-          <NavInner links={links} />
-        </GlassSurface>
+          {inner}
+        </SvgGlass>
+      ) : engine === 'webgl' ? (
+        <WebglGlassShell enabled={refraction}>{inner}</WebglGlassShell>
       ) : (
-        <WebglGlassShell enabled={refraction}>
-          <NavInner links={links} />
-        </WebglGlassShell>
+        <FallbackShell>{inner}</FallbackShell>
       )}
     </div>
   );

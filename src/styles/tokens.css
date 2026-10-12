@@ -85,8 +85,8 @@
 
 [data-theme="neutral"] {
   --accent: #8e8e93;
-  --accent-bright: #aeaeb2;
-  --accent-text: #aeaeb2;
+  --accent-bright: #ffffff;
+  --accent-text: #ffffff;
   --btn-primary-fg: #0f0f10;
   --btn-primary-shadow: rgba(142, 142, 147, 0.28);
   --term-prompt: #a1a1a6;

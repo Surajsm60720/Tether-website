@@ -4,9 +4,8 @@ import GlassNav from './GlassNav';
 const pathname = Astro.url.pathname;
 const links = [
   { href: '/#casual', label: 'Product' },
-  { href: '/features', label: 'Features' },
   { href: '/docs', label: 'Docs' },
-  { href: '/security', label: 'Security' },
+  { href: '/docs/security', label: 'Security' },
   { href: '/journey', label: 'Journey' },
 ].map((link) => ({
   ...link,
@@ -18,7 +17,7 @@ const links = [
 
 <header class="nav" data-nav>
   <div class="nav-bar">
-    <GlassNav client:load pathname={pathname} links={links} />
+    <GlassNav client:idle pathname={pathname} links={links} />
   </div>
 </header>
 

@@ -7,8 +7,9 @@ interface Props {
   title: string;
   description: string;
   headings?: { depth: number; slug: string; text: string }[];
+  docId?: string;
 }
-const { title, description, headings = [] } = Astro.props;
+const { title, description, headings = [], docId } = Astro.props;
 const docs = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
 const sections = [
   { id: 'start', label: 'Start' },
@@ -29,11 +30,26 @@ function isCurrent(id: string) {
 }
 
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const showToc = toc.length > 0;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  description,
+  about: 'Tether — Mac host and iPhone client, local by design',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Tether Docs',
+    url: 'https://tether.app/docs',
+  },
+};
 ---
 
 <BaseLayout title={title} description={description} bodyClass="docs-body">
-  <div class="docs-shell">
-    <aside class="docs-sidebar">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <div class:list={['docs-shell', showToc && 'has-toc']}>
+    <aside class="docs-sidebar" aria-label="Documentation">
       <div class="docs-search" data-docs-search>
         <label class="visually-hidden" for="docs-q">Search docs</label>
         <input id="docs-q" type="search" placeholder="Search docs" autocomplete="off" />
@@ -47,43 +63,74 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
             return (
               <div class="docs-nav-group">
                 <p class="docs-nav-label">{section.label}</p>
-                {items.map((doc) => (
-                  <a
-                    href={docHref(doc.id)}
-                    aria-current={isCurrent(doc.id) ? 'page' : undefined}
-                    data-docs-link
-                    data-title={doc.data.title}
-                    data-description={doc.data.description}
-                  >
-                    {doc.id === 'index' ? 'Overview' : doc.data.title}
-                  </a>
-                ))}
+                {items.map((doc) => {
+                  const current = isCurrent(doc.id);
+                  const nestToc = current && showToc;
+                  return (
+                    <div class:list={['docs-nav-item', nestToc && 'has-page-toc']}>
+                      <a
+                        href={docHref(doc.id)}
+                        aria-current={current ? 'page' : undefined}
+                        data-docs-link
+                        data-title={doc.data.title}
+                        data-description={doc.data.description}
+                      >
+                        {doc.id === 'index' ? 'Overview' : doc.data.title}
+                      </a>
+                      {nestToc && (
+                        <nav class="docs-page-toc docs-page-toc-inline" aria-label="On this page">
+                          {toc.map((h) => (
+                            <a href={`#${h.slug}`} class:list={[h.depth === 3 && 'is-h3']}>
+                              {h.text}
+                            </a>
+                          ))}
+                        </nav>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             );
           })
         }
       </nav>
+      <p class="docs-llm-hint">
+        <a href="/llms.txt">llms.txt</a>
+        {' · '}
+        <a href="/docs.json">docs.json</a>
+      </p>
     </aside>
+
     <div class="docs-main">
-      <article class="docs-article" data-pagefind-body>
-        <h1>{title}</h1>
-        <p class="docs-desc">{description}</p>
-        {
-          toc.length > 0 && (
-            <nav class="docs-toc" aria-label="On this page">
-              {toc.map((h) => (
-                <a href={`#${h.slug}`} class:list={[h.depth === 3 && 'is-h3']}>
-                  {h.text}
-                </a>
-              ))}
-            </nav>
-          )
-        }
-        <div class="docs-content">
+      <article
+        class="docs-article"
+        data-pagefind-body
+        data-doc-id={docId}
+        itemscope
+        itemtype="https://schema.org/TechArticle"
+      >
+        <h1 itemprop="headline">{title}</h1>
+        <p class="docs-desc" itemprop="description">{description}</p>
+        <div class="docs-content" itemprop="articleBody">
           <slot />
         </div>
       </article>
     </div>
+
+    {
+      showToc && (
+        <aside class="docs-toc-rail" aria-label="On this page">
+          <p class="docs-toc-label">On this page</p>
+          <nav class="docs-page-toc">
+            {toc.map((h) => (
+              <a href={`#${h.slug}`} class:list={[h.depth === 3 && 'is-h3']}>
+                {h.text}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )
+    }
   </div>
 
   <script>
@@ -138,7 +185,43 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       });
     }
 
+    function bootTocSpy() {
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('.docs-page-toc a')];
+      if (!links.length) return;
+
+      const byId = new Map(
+        links
+          .map((a) => {
+            const id = a.getAttribute('href')?.slice(1);
+            const el = id ? document.getElementById(id) : null;
+            return id && el ? ([id, a] as const) : null;
+          })
+          .filter(Boolean) as [string, HTMLAnchorElement][],
+      );
+      if (!byId.size) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const id = entry.target.id;
+            const active = byId.get(id);
+            if (!active) continue;
+            links.forEach((l) => l.removeAttribute('aria-current'));
+            active.setAttribute('aria-current', 'true');
+          }
+        },
+        { rootMargin: '-20% 0px -65% 0px', threshold: 0 },
+      );
+
+      byId.forEach((_, id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }
+
     bootDocsSearch();
+    bootTocSpy();
   </script>
 </BaseLayout>
 
@@ -205,10 +288,6 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     margin-top: 0.15rem;
     font-size: 0.78rem;
     color: var(--ink-secondary);
-  }
-
-  .docs-toc a.is-h3 {
-    padding-left: 0.75rem;
   }
 
   .docs-content > :first-child {

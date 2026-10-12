@@ -1,5 +1,6 @@
-@import "@fontsource-variable/geist/index.css";
-@import "@fontsource-variable/geist-mono/index.css";
+/* wght.css keeps unicode-range splits; browsers only fetch matching subsets */
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/geist-mono/wght.css";
 @import "./tokens.css";
 
 *,
@@ -12,6 +13,8 @@ html {
   scroll-behavior: smooth;
   color-scheme: dark;
   background: var(--surface);
+  /* Keep hash targets clear of the sticky glass nav */
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

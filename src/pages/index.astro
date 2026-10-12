@@ -9,7 +9,7 @@ import HeroLoop from '../components/HeroLoop';
   <!-- Hero -->
   <section class="hero" aria-label="Tether">
     <div class="hero-solo">
-      <HeroLoop client:load />
+      <HeroLoop client:idle />
       <h1>Your Mac. On your iPhone.</h1>
       <p class="hero-support">
         Browse files. Send photos. Run a terminal. All local — no cloud, no passwords to type.
@@ -27,23 +27,23 @@ import HeroLoop from '../components/HeroLoop';
     <div class="wrap moment-wrap">
       <div class="moment-copy">
         <p class="eyebrow">A familiar moment</p>
-        <h2 class="h2" id="moment-heading">The file is on your Mac. You’re not.</h2>
+        <h2 class="h2" id="moment-heading">Ever needed a file stuck on the Mac in the other room?</h2>
         <p class="lead">
-          You’re on the couch with your phone. The PDF, the photo, the export — it’s sitting on the laptop
-          in the other room. What now?
+          You’re on the couch with your phone. The PDF, the photo, the export — it’s sitting on the laptop.
+          Or an agent is mid-run and you need the Mac awake while you step away. What now?
         </p>
         <ul class="moment-frictions">
           <li>
-            <strong>AirDrop</strong>
-            <span>Needs both devices in reach — and it won’t let you browse the disk.</span>
+            <strong>The file is there. You’re not.</strong>
+            <span>AirDrop needs both devices in reach — and it won’t let you browse the disk.</span>
           </li>
           <li>
-            <strong>Cloud sync</strong>
-            <span>Means uploading first, waiting, and trusting another account.</span>
+            <strong>You want a preview, not another upload.</strong>
+            <span>Cloud sync means waiting, and trusting another account, for something already local.</span>
           </li>
           <li>
-            <strong>Email yourself</strong>
-            <span>The workaround you already hate — slow, messy, and easy to lose.</span>
+            <strong>The Mac has to stay awake.</strong>
+            <span>Emailing yourself won’t help a live agent — and closing the lid usually means sleep.</span>
           </li>
         </ul>
       </div>
@@ -311,39 +311,91 @@ import HeroLoop from '../components/HeroLoop';
       <h2 class="h2">Pair once. Open again in two taps.</h2>
       <p class="lead">Under a minute the first time. After that, tap the Mac and go.</p>
 
-      <div class="setup-track" style="margin-top:2rem">
-        <div class="setup-step" data-setup-step>
-          <div class="setup-num">1</div>
-          <div>
-            <h3>Install on your Mac</h3>
-            <p>Build Tether Host from source and keep it in the menu bar.</p>
+      <ol class="setup-track" aria-label="Setup in four steps">
+        <li class="setup-step" data-setup-step>
+          <div class="setup-visual" aria-hidden="true">
+            <span class="setup-num">1</span>
+            <svg viewBox="0 0 120 88" width="120" height="88" fill="none">
+              <!-- Mac + menu-bar host -->
+              <rect x="18" y="22" width="64" height="42" rx="5" stroke="currentColor" stroke-width="1.5"></rect>
+              <rect x="22" y="26" width="56" height="28" rx="2" fill="currentColor" opacity="0.06"></rect>
+              <path d="M40 70h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+              <rect x="28" y="28" width="44" height="7" rx="1.5" fill="currentColor" opacity="0.1"></rect>
+              <circle cx="33" cy="31.5" r="1.6" fill="var(--accent)"></circle>
+              <path d="M38 31.5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.45"></path>
+              <rect x="78" y="14" width="28" height="22" rx="5" stroke="var(--accent)" stroke-width="1.4"></rect>
+              <path d="M84 21h10M84 25h7" stroke="var(--accent)" stroke-width="1.25" stroke-linecap="round"></path>
+              <path d="M82 30h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"></path>
+            </svg>
           </div>
-        </div>
-        <div class="setup-step" data-setup-step>
-          <div class="setup-num">2</div>
-          <div>
-            <h3>Share a folder</h3>
-            <p>Nothing is visible until you choose it. Uploads are opt-in per folder.</p>
+          <h3>Install on your Mac</h3>
+          <p>Build Host from source. It lives in the menu bar.</p>
+        </li>
+        <li class="setup-step" data-setup-step>
+          <div class="setup-visual" aria-hidden="true">
+            <span class="setup-num">2</span>
+            <svg viewBox="0 0 120 88" width="120" height="88" fill="none">
+              <!-- Shared folder pick -->
+              <path
+                d="M30 30h18l6 6h36c2.2 0 4 1.8 4 4v28c0 2.2-1.8 4-4 4H30c-2.2 0-4-1.8-4-4V34c0-2.2 1.8-4 4-4Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+              ></path>
+              <path d="M26 42h68" stroke="currentColor" stroke-width="1.3" opacity="0.35"></path>
+              <rect x="36" y="50" width="28" height="4" rx="1.5" fill="currentColor" opacity="0.2"></rect>
+              <rect x="36" y="58" width="18" height="4" rx="1.5" fill="currentColor" opacity="0.12"></rect>
+              <circle cx="86" cy="56" r="11" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.4"></circle>
+              <path d="M81.5 56.2l3 3 6.2-6.5" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
           </div>
-        </div>
-        <div class="setup-step" data-setup-step>
-          <div class="setup-num">3</div>
-          <div style="display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap">
-            <div>
-              <h3>Scan the QR</h3>
-              <p>Approve on the Mac. Keys land in Keychain — not in a password you type.</p>
-            </div>
-            <div class="qr-pulse" aria-hidden="true"></div>
+          <h3>Share a folder</h3>
+          <p>Nothing is visible until you choose it. Uploads are opt-in.</p>
+        </li>
+        <li class="setup-step" data-setup-step>
+          <div class="setup-visual" aria-hidden="true">
+            <span class="setup-num">3</span>
+            <svg viewBox="0 0 120 88" width="120" height="88" fill="none">
+              <!-- Mac QR + phone scan (dark, not a white box) -->
+              <rect x="10" y="18" width="48" height="52" rx="5" stroke="currentColor" stroke-width="1.5"></rect>
+              <rect x="16" y="24" width="36" height="36" rx="3" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"></rect>
+              <rect x="20" y="28" width="8" height="8" rx="1" fill="var(--accent)"></rect>
+              <rect x="40" y="28" width="8" height="8" rx="1" fill="var(--accent)"></rect>
+              <rect x="20" y="48" width="8" height="8" rx="1" fill="var(--accent)"></rect>
+              <rect x="32" y="36" width="4" height="4" fill="var(--accent)" opacity="0.85"></rect>
+              <rect x="40" y="44" width="4" height="4" fill="var(--accent)" opacity="0.7"></rect>
+              <rect x="28" y="48" width="4" height="4" fill="var(--accent)" opacity="0.55"></rect>
+              <rect x="40" y="52" width="8" height="4" fill="var(--accent)" opacity="0.45"></rect>
+              <rect x="68" y="14" width="34" height="58" rx="6" stroke="currentColor" stroke-width="1.5"></rect>
+              <rect x="73" y="22" width="24" height="38" rx="2" fill="currentColor" opacity="0.06"></rect>
+              <circle cx="85" cy="34" r="7" stroke="var(--accent)" stroke-width="1.35"></circle>
+              <path d="M85 30.8v6.4M81.8 34h6.4" stroke="var(--accent)" stroke-width="1.25" stroke-linecap="round"></path>
+              <path d="M78 64h14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.45"></path>
+              <path d="M58 40h8" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
           </div>
-        </div>
-        <div class="setup-step" data-setup-step>
-          <div class="setup-num">4</div>
-          <div>
-            <h3>Browse</h3>
-            <p>Open the iPhone app, tap your Mac, and you’re in the shares.</p>
+          <h3>Scan the QR</h3>
+          <p>Approve once. Keys land in Keychain — nothing to type.</p>
+        </li>
+        <li class="setup-step" data-setup-step>
+          <div class="setup-visual" aria-hidden="true">
+            <span class="setup-num">4</span>
+            <svg viewBox="0 0 120 88" width="120" height="88" fill="none">
+              <!-- Phone browsing shares -->
+              <rect x="38" y="8" width="44" height="72" rx="8" stroke="currentColor" stroke-width="1.5"></rect>
+              <rect x="44" y="16" width="32" height="50" rx="2.5" fill="currentColor" opacity="0.05"></rect>
+              <circle cx="49" cy="22" r="2.2" fill="var(--accent)"></circle>
+              <path d="M55 22h14" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity="0.5"></path>
+              <rect x="46" y="30" width="28" height="10" rx="2" stroke="currentColor" stroke-width="1.2" opacity="0.55"></rect>
+              <rect x="46" y="44" width="28" height="10" rx="2" stroke="currentColor" stroke-width="1.2" opacity="0.4"></rect>
+              <rect x="46" y="58" width="18" height="4" rx="1.5" fill="var(--accent)" opacity="0.85"></rect>
+              <path d="M55 74h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.45"></path>
+            </svg>
           </div>
-        </div>
-      </div>
+          <h3>Browse</h3>
+          <p>Open the app, tap your Mac, and you’re in the shares.</p>
+        </li>
+      </ol>
       <div class="inline-links">
         <a class="btn btn-primary" href="/docs/quick-start">Quick start</a>
         <a class="quiet-link" href="/docs/pairing">Pairing details</a>
@@ -353,13 +405,19 @@ import HeroLoop from '../components/HeroLoop';
 
   <!-- Trust -->
   <section class="section" id="trust">
-    <div class="wrap">
-      <p class="eyebrow">Trust</p>
-      <h2 class="h2">Local by design</h2>
-      <p class="lead">
-        No account. No cloud sync. Encrypted with the key from pairing. You choose the folders; you can
-        revoke a phone anytime.
-      </p>
+    <div class="wrap trust-wrap">
+      <div class="trust-intro">
+        <p class="eyebrow">Trust</p>
+        <h2 class="h2">Local by design</h2>
+        <p class="lead">
+          No account. No cloud sync. Encrypted with the key from pairing. You choose the folders; you can
+          revoke a phone anytime.
+        </p>
+        <div class="inline-links">
+          <a class="btn btn-primary" href="/docs/security">Security overview</a>
+          <a class="quiet-link" href="/docs/security#privacy">Privacy</a>
+        </div>
+      </div>
       <ul class="trust-list">
         <li>
           <strong>Encrypted channel</strong>
@@ -378,73 +436,63 @@ import HeroLoop from '../components/HeroLoop';
           <span>Every phone is explicit. Revoke deletes that phone’s key.</span>
         </li>
       </ul>
-      <div class="inline-links">
-        <a class="btn btn-secondary" href="/security">Security overview</a>
-        <a class="quiet-link" href="/docs/security">Deep dive in docs</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bento -->
-  <section class="section-tight">
-    <div class="wrap">
-      <p class="eyebrow">Proof</p>
-      <h2 class="h2">Two ways in. One local connection.</h2>
-      <div class="bento">
-        <div>
-          <h3>Local only</h3>
-          <p>Core path stays on your Wi‑Fi. No account required.</p>
-        </div>
-        <div>
-          <h3>QR pair</h3>
-          <p>One scan, Mac approval, then reconnect without typing a password.</p>
-        </div>
-        <div>
-          <h3>GUI + Terminal</h3>
-          <p>Browse like Files, or drop into a prompt that knows its place.</p>
-        </div>
-        <div>
-          <h3>QuickLook</h3>
-          <p>Native preview for the types QuickLook already handles.</p>
-        </div>
-        <div>
-          <h3>Inbox / Shelf</h3>
-          <p>Send from the phone; drag out on the Mac.</p>
-        </div>
-        <div>
-          <h3>Agents</h3>
-          <p>Allowlisted CLIs only — honest about the boundary, not a general shell.</p>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- Journey teaser -->
-  <section class="section journey-teaser">
-    <div class="wrap">
-      <p class="eyebrow">Journey</p>
-      <h2 class="h2">From meetup slice to 3.2</h2>
-      <p class="lead">
-        An engineering diary of what shipped: pairing, files, terminal, Send, agents, and what is still
-        out of scope.
-      </p>
-      <div class="inline-links">
-        <a class="btn btn-secondary" href="/journey">Read the journey</a>
-        <a class="quiet-link" href="/docs/changelog">Changelog</a>
+  <section class="section journey-teaser" data-reveal-section>
+    <div class="wrap journey-teaser-wrap">
+      <div class="journey-teaser-copy">
+        <p class="eyebrow">Journey</p>
+        <h2 class="h2">It started as a meetup slice.</h2>
+        <p class="lead">
+          Pairing on Wi‑Fi. Files in your pocket. A terminal that knows its place. Agents, Island status,
+          then remote with the lid closed. Read the engineering diary — milestones, not mythology.
+        </p>
+        <div class="inline-links">
+          <a class="btn btn-primary" href="/journey">See how it began</a>
+          <a class="quiet-link" href="/docs/changelog">Changelog</a>
+        </div>
       </div>
+      <ol class="journey-milestones" aria-label="Product milestones">
+        <li>
+          <span class="journey-mile-mark">M0</span>
+          <span class="journey-mile-label">Meetup slice</span>
+        </li>
+        <li>
+          <span class="journey-mile-mark">M1</span>
+          <span class="journey-mile-label">Files &amp; transfers</span>
+        </li>
+        <li>
+          <span class="journey-mile-mark">M2</span>
+          <span class="journey-mile-label">Terminal</span>
+        </li>
+        <li>
+          <span class="journey-mile-mark">3.0</span>
+          <span class="journey-mile-label">Send</span>
+        </li>
+        <li>
+          <span class="journey-mile-mark">3.2</span>
+          <span class="journey-mile-label">Agents &amp; Island</span>
+        </li>
+        <li class="is-now">
+          <span class="journey-mile-mark">3.3</span>
+          <span class="journey-mile-label">Lid-closed remote</span>
+        </li>
+      </ol>
     </div>
   </section>
 
   <!-- Get Tether -->
   <section class="section get-tether" id="download">
-    <div class="wrap">
-      <p class="eyebrow">Get Tether</p>
-      <h2 class="h2">Build from source today</h2>
-      <p class="lead">
-        App Store and TestFlight builds are not ready yet. Clone the repo, open the Xcode project, and
-        run Host + Client on your devices.
+    <div class="wrap get-tether-wrap">
+      <p class="eyebrow" data-reveal>Get Tether</p>
+      <h2 class="h2" data-reveal data-reveal-delay="1">If any of that sounded like you, start here.</h2>
+      <p class="lead" data-reveal data-reveal-delay="2">
+        Pair once on Wi‑Fi. Then open your Mac from your phone — browse, preview, send, or keep an agent
+        going. Local by design. No cloud account in the middle.
       </p>
-      <div class="inline-links">
+      <div class="inline-links" data-reveal data-reveal-delay="3">
         <a class="btn btn-primary" href="/download">Get Tether</a>
         <a class="btn btn-secondary" href="/docs/quick-start">Quick start</a>
         <a

@@ -107,7 +107,46 @@ function initSetupSteps() {
   steps.forEach((s) => io.observe(s));
 }
 
-/** Ambient float already in CSS; disable transforms if reduced motion via CSS media */
+/** Staggered reveal for Get Tether (and any [data-reveal] blocks) */
+function initReveals() {
+  const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  const sections = document.querySelectorAll<HTMLElement>('[data-reveal-section]');
+
+  if (reduceMotion) {
+    nodes.forEach((el) => el.classList.add('is-revealed'));
+    sections.forEach((el) => el.classList.add('is-inview'));
+    return;
+  }
+
+  if (nodes.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-revealed');
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.28, rootMargin: '0px 0px -8% 0px' },
+    );
+    nodes.forEach((el) => io.observe(el));
+  }
+
+  if (sections.length) {
+    const sio = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-inview');
+          sio.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.35 },
+    );
+    sections.forEach((el) => sio.observe(el));
+  }
+}
 
 initStickyPaths();
 initSetupSteps();
+initReveals();

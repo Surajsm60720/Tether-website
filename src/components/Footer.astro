@@ -5,88 +5,145 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="wrap footer-grid">
-    <div>
+  <div class="wrap footer-inner">
+    <div class="footer-brand-block">
       <p class="footer-brand">Tether</p>
       <p class="footer-tag">Your Mac. On your iPhone. Local by design.</p>
     </div>
-    <div>
-      <p class="footer-label">Docs</p>
-      <ul>
-        <li><a href="/docs/quick-start">Quick start</a></li>
-        <li><a href="/docs/mac">Mac setup</a></li>
-        <li><a href="/docs/iphone">iPhone setup</a></li>
-        <li><a href="/docs/pairing">Pairing</a></li>
-        <li><a href="/docs/remote">Remote</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-label">Product</p>
-      <ul>
-        <li><a href="/security">Security</a></li>
-        <li><a href="/docs/changelog">Changelog</a></li>
-        <li><a href="/journey">Journey</a></li>
-        <li><a href="/download">Get Tether</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-label">Legal</p>
-      <ul>
-        <li>
-          <a href="/docs/security#privacy">Privacy</a>
-          <span class="footer-note"> — local-only core path; no account</span>
-        </li>
-        <li>
-          <a href="https://github.com/Surajsm60720/Tether" target="_blank" rel="noopener noreferrer"
-            >License / repo</a
-          >
-        </li>
-      </ul>
-    </div>
+
+    <nav class="footer-cols" aria-label="Footer">
+      <div>
+        <p class="footer-label">Product</p>
+        <ul>
+          <li><a href="/docs/files">Files &amp; preview</a></li>
+          <li><a href="/docs/send">Send</a></li>
+          <li><a href="/docs/terminal">Terminal</a></li>
+          <li><a href="/docs/agents">Agents</a></li>
+          <li><a href="/docs/remote">Other networks</a></li>
+          <li><a href="/docs/lid-closed">Lid-closed awake</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-label">Start</p>
+        <ul>
+          <li><a href="/docs/quick-start">Quick start</a></li>
+          <li><a href="/docs/mac">Mac setup</a></li>
+          <li><a href="/docs/iphone">iPhone setup</a></li>
+          <li><a href="/docs/pairing">Pairing</a></li>
+          <li><a href="/download">Get Tether</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-label">More</p>
+        <ul>
+          <li><a href="/docs/security">Security</a></li>
+          <li><a href="/docs/security#privacy">Privacy</a></li>
+          <li><a href="/docs/changelog">Changelog</a></li>
+          <li><a href="/journey">Journey</a></li>
+          <li>
+            <a href="https://github.com/Surajsm60720/Tether" target="_blank" rel="noopener noreferrer"
+              >GitHub</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
+
   <div class="wrap footer-bottom">
-    <p>© {year} Tether. Built from source until App Store distribution.</p>
-    <ThemeSwitcher client:load />
+    <p>© {year} Tether</p>
+    <ThemeSwitcher client:idle />
   </div>
 </footer>
 
 <style>
   .footer {
-    border-top: 1px solid var(--hairline);
-    padding: 3.5rem 0 2.25rem;
-    background:
-      radial-gradient(50% 80% at 0% 0%, var(--accent-soft), transparent 55%),
-      var(--surface-raised);
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0 2.25rem;
     color: var(--ink-secondary);
+    background: transparent;
   }
 
-  .footer-grid {
+  .footer::before {
+    content: "";
+    position: absolute;
+    inset: -2.5rem 0 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(50% 70% at 8% 0%, var(--accent-soft), transparent 68%),
+      radial-gradient(40% 55% at 92% 40%, var(--accent-glow), transparent 70%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 100%);
+  }
+
+  .footer-inner,
+  .footer-bottom {
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
     display: grid;
-    grid-template-columns: 1.5fr repeat(3, 1fr);
-    gap: 2.25rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 2fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
   }
 
   .footer-brand {
     margin: 0 0 0.45rem;
     color: var(--ink);
-    font-weight: 740;
+    font-family: var(--font-display);
+    font-weight: 720;
     letter-spacing: -0.04em;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
 
   .footer-tag {
     margin: 0;
-    max-width: 16rem;
+    max-width: 18rem;
     font-size: 0.95rem;
     line-height: 1.45;
   }
 
+  .footer-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.35rem;
+    min-height: 2.5rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 980px;
+    background: linear-gradient(180deg, var(--accent-bright) 0%, var(--accent) 100%);
+    color: var(--btn-primary-fg);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 8px 22px var(--btn-primary-shadow);
+    transition: background 0.2s var(--ease-out);
+  }
+
+  .footer-cta:hover {
+    background: var(--accent-bright);
+    color: var(--btn-primary-fg);
+  }
+
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem 2rem;
+  }
+
   .footer-label {
-    margin: 0 0 0.7rem;
+    margin: 0 0 0.75rem;
     color: var(--ink);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
@@ -97,28 +154,24 @@ const year = new Date().getFullYear();
   }
 
   .footer li {
-    margin: 0.4rem 0;
+    margin: 0.45rem 0;
     font-size: 0.92rem;
   }
 
-  .footer a {
+  .footer-cols a {
     color: var(--ink-secondary);
     text-decoration: none;
+    transition: color 0.15s ease;
   }
 
-  .footer a:hover {
+  .footer-cols a:hover {
     color: var(--accent-text);
-  }
-
-  .footer-note {
-    color: var(--ink-tertiary);
-    font-size: 0.8rem;
   }
 
   .footer-bottom {
     margin-top: 2.75rem;
     padding-top: 1.25rem;
-    border-top: 1px solid var(--hairline);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hairline) 70%, transparent);
     font-size: 0.8rem;
     display: flex;
     flex-wrap: wrap;
@@ -144,7 +197,7 @@ const year = new Date().getFullYear();
     padding: 0.35rem 0.75rem 0.35rem 0.5rem;
     border-radius: 999px;
     border: 1px solid var(--hairline-strong);
-    background: color-mix(in srgb, var(--surface) 55%, transparent);
+    background: color-mix(in srgb, var(--surface-raised) 70%, transparent);
     color: var(--ink);
     font: inherit;
     font-size: 0.82rem;
@@ -287,14 +340,21 @@ const year = new Date().getFullYear();
     }
   }
 
-  @media (max-width: 800px) {
-    .footer-grid {
+  @media (max-width: 900px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer-cols {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  @media (max-width: 480px) {
-    .footer-grid {
+  @media (max-width: 420px) {
+    .footer-cols {
       grid-template-columns: 1fr;
     }
 

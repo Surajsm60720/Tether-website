@@ -1,11 +1,23 @@
 ---
 title: Changelog
-description: Versioned What’s new, seeded from the app and README (current 3.2).
+description: Versioned What’s new, seeded from the app and README (current 3.3).
 order: 32
 section: meta
 ---
 
 The same notes ship in Settings → What's new on Mac and iPhone.
+
+## 3.3
+
+Lid-closed awake and quieter Tailscale remote.
+
+- **Lid-closed awake** — one-time Mac setup so Tether can keep the Mac awake with the lid shut while you need it online, then restore normal sleep
+- **Hold awake on battery** — choose whether lid-closed hold works unplugged or only on AC
+- Tailscale-first **Other networks** setup with clearer `100.x` addresses in the phone’s saved route
+- Soft reconnects over cellular / Tailscale blips — brief stalls should not wipe a live session or agent
+- Battery-aware keepalives when holding awake unplugged
+
+See [Lid-closed awake](/docs/lid-closed) and [Other networks](/docs/remote).
 
 ## 3.2
 

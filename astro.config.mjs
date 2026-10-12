@@ -13,6 +13,10 @@ export default defineConfig({
       theme: 'css-variables',
     },
   },
+  redirects: {
+    '/features': '/docs',
+    '/security': '/docs/security',
+  },
   vite: {
     plugins: [tailwindcss()],
   },
